@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="UniTrack_UMY.Core/UniTrack_UMY.Core.csproj" />
+  <Project Path="UniTrack_UMY.Infrastructure/UniTrack_UMY.Infrastructure.csproj" />
+  <Project Path="UniTrack_UMY.Tests/UniTrack_UMY.Tests.csproj" />
+  <Project Path="UniTrack_UMY.WinForms/UniTrack_UMY.WinForms.csproj" />
+</Solution>
