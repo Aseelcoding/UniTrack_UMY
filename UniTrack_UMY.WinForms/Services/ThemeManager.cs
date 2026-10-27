@@ -22,7 +22,11 @@ namespace UniTrack_UMY.WinForms.Services
             }
             else if (control is Panel panel)
             {
-                panel.BackColor = _colors.Surface;
+                if (panel.Name == "pnlSidebar")
+                    panel.BackColor = _colors.Sidebar;
+                else
+                    panel.BackColor = _colors.Background;
+
                 panel.ForeColor = _colors.Text;
             }
             else if (control is Label label)
@@ -43,10 +47,20 @@ namespace UniTrack_UMY.WinForms.Services
                 listBox.BackColor = _colors.Surface;
                 listBox.ForeColor = _colors.Text;
             }
-            else
+            else if (control is ListView listView)
             {
-                control.BackColor = _colors.Background;
-                control.ForeColor = _colors.Text;
+                listView.BackColor = _colors.Surface;
+                listView.ForeColor = _colors.Text;
+            }
+            else if (control is TextBox textBox)
+            {
+                textBox.BackColor = _colors.Surface;
+                textBox.ForeColor = _colors.Text;
+            }
+            else if (control is ComboBox comboBox)
+            {
+                comboBox.BackColor = _colors.Surface;
+                comboBox.ForeColor = _colors.Text;
             }
 
             foreach (Control child in control.Controls)

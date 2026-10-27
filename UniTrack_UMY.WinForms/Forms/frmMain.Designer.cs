@@ -75,6 +75,7 @@
             btnTasks.Text = "Tasks";
             btnTasks.TextAlign = ContentAlignment.MiddleLeft;
             btnTasks.UseVisualStyleBackColor = false;
+            btnTasks.Click += btnTasks_Click;
             // 
             // btnMyCourses
             // 
@@ -90,6 +91,7 @@
             btnMyCourses.Text = "My Courses";
             btnMyCourses.TextAlign = ContentAlignment.MiddleLeft;
             btnMyCourses.UseVisualStyleBackColor = false;
+            btnMyCourses.Click += btnMyCourses_Click;
             // 
             // btnSettings
             // 
@@ -105,6 +107,7 @@
             btnSettings.Text = "Settings";
             btnSettings.TextAlign = ContentAlignment.MiddleLeft;
             btnSettings.UseVisualStyleBackColor = false;
+            btnSettings.Click += btnSettings_Click;
             // 
             // btnNotesPlanner
             // 
@@ -120,6 +123,7 @@
             btnNotesPlanner.Text = "Notes And Planner";
             btnNotesPlanner.TextAlign = ContentAlignment.MiddleLeft;
             btnNotesPlanner.UseVisualStyleBackColor = false;
+            btnNotesPlanner.Click += btnNotesPlanner_Click;
             // 
             // btnSchedule
             // 
@@ -135,6 +139,7 @@
             btnSchedule.Text = "Schedule";
             btnSchedule.TextAlign = ContentAlignment.MiddleLeft;
             btnSchedule.UseVisualStyleBackColor = false;
+            btnSchedule.Click += btnSchedule_Click;
             // 
             // btnDashboard
             // 
@@ -150,10 +155,11 @@
             btnDashboard.Text = "Dashboard";
             btnDashboard.TextAlign = ContentAlignment.MiddleLeft;
             btnDashboard.UseVisualStyleBackColor = false;
+            btnDashboard.Click += btnDashboard_Click;
             // 
             // lblAppTitle
             // 
-            lblAppTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblAppTitle.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             lblAppTitle.ForeColor = Color.White;
             lblAppTitle.Location = new Point(20, 25);
             lblAppTitle.Name = "lblAppTitle";

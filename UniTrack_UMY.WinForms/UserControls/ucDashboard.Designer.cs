@@ -57,9 +57,9 @@
             pnlUpcomingTasks.BorderStyle = BorderStyle.FixedSingle;
             pnlUpcomingTasks.Controls.Add(lstUpcomingTasks);
             pnlUpcomingTasks.Controls.Add(lblUpcomingTasksTitle);
-            pnlUpcomingTasks.Location = new Point(138, 333);
+            pnlUpcomingTasks.Location = new Point(12, 324);
             pnlUpcomingTasks.Name = "pnlUpcomingTasks";
-            pnlUpcomingTasks.Size = new Size(736, 217);
+            pnlUpcomingTasks.Size = new Size(466, 217);
             pnlUpcomingTasks.TabIndex = 11;
             // 
             // lstUpcomingTasks
@@ -71,7 +71,7 @@
             lstUpcomingTasks.IntegralHeight = false;
             lstUpcomingTasks.Location = new Point(-1, 52);
             lstUpcomingTasks.Name = "lstUpcomingTasks";
-            lstUpcomingTasks.Size = new Size(733, 164);
+            lstUpcomingTasks.Size = new Size(463, 164);
             lstUpcomingTasks.TabIndex = 9;
             // 
             // lblUpcomingTasksTitle
@@ -91,7 +91,7 @@
             pnlProgressCard.BorderStyle = BorderStyle.FixedSingle;
             pnlProgressCard.Controls.Add(lblStudyProgress);
             pnlProgressCard.Controls.Add(lblProgressTitle);
-            pnlProgressCard.Location = new Point(138, 187);
+            pnlProgressCard.Location = new Point(12, 178);
             pnlProgressCard.Name = "pnlProgressCard";
             pnlProgressCard.Size = new Size(200, 120);
             pnlProgressCard.TabIndex = 10;
@@ -122,7 +122,7 @@
             pnlUpcomingCard.BorderStyle = BorderStyle.FixedSingle;
             pnlUpcomingCard.Controls.Add(lblUpcomingCount);
             pnlUpcomingCard.Controls.Add(lblUpcomingTitle);
-            pnlUpcomingCard.Location = new Point(662, 49);
+            pnlUpcomingCard.Location = new Point(536, 40);
             pnlUpcomingCard.Name = "pnlUpcomingCard";
             pnlUpcomingCard.Size = new Size(200, 120);
             pnlUpcomingCard.TabIndex = 9;
@@ -153,7 +153,7 @@
             pnlTasksCard.BorderStyle = BorderStyle.FixedSingle;
             pnlTasksCard.Controls.Add(lblTasksCount);
             pnlTasksCard.Controls.Add(lblTasksTitle);
-            pnlTasksCard.Location = new Point(411, 49);
+            pnlTasksCard.Location = new Point(285, 40);
             pnlTasksCard.Name = "pnlTasksCard";
             pnlTasksCard.Size = new Size(200, 120);
             pnlTasksCard.TabIndex = 8;
@@ -184,7 +184,7 @@
             pnlCoursesCard.BorderStyle = BorderStyle.FixedSingle;
             pnlCoursesCard.Controls.Add(lblCoursesCount);
             pnlCoursesCard.Controls.Add(lblCoursesTitle);
-            pnlCoursesCard.Location = new Point(138, 49);
+            pnlCoursesCard.Location = new Point(12, 40);
             pnlCoursesCard.Name = "pnlCoursesCard";
             pnlCoursesCard.Size = new Size(200, 120);
             pnlCoursesCard.TabIndex = 7;
@@ -221,7 +221,7 @@
             Controls.Add(pnlCoursesCard);
             Font = new Font("Segoe UI", 10F);
             Name = "ucDashboard";
-            Size = new Size(1012, 598);
+            Size = new Size(742, 598);
             pnlUpcomingTasks.ResumeLayout(false);
             pnlProgressCard.ResumeLayout(false);
             pnlUpcomingCard.ResumeLayout(false);
