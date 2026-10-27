@@ -30,7 +30,7 @@
         {
             pnlUpcomingTasks = new Panel();
             lstUpcomingTasks = new ListBox();
-            lblUpcomingTasksTitle = new Label();
+            lblUpcomingTasks = new Label();
             pnlProgressCard = new Panel();
             lblStudyProgress = new Label();
             lblProgressTitle = new Label();
@@ -43,6 +43,8 @@
             pnlCoursesCard = new Panel();
             lblCoursesCount = new Label();
             lblCoursesTitle = new Label();
+            lblDashboardTitle = new Label();
+            lblWelcome = new Label();
             pnlUpcomingTasks.SuspendLayout();
             pnlProgressCard.SuspendLayout();
             pnlUpcomingCard.SuspendLayout();
@@ -56,8 +58,8 @@
             pnlUpcomingTasks.BackColor = Color.White;
             pnlUpcomingTasks.BorderStyle = BorderStyle.FixedSingle;
             pnlUpcomingTasks.Controls.Add(lstUpcomingTasks);
-            pnlUpcomingTasks.Controls.Add(lblUpcomingTasksTitle);
-            pnlUpcomingTasks.Location = new Point(12, 324);
+            pnlUpcomingTasks.Controls.Add(lblUpcomingTasks);
+            pnlUpcomingTasks.Location = new Point(13, 374);
             pnlUpcomingTasks.Name = "pnlUpcomingTasks";
             pnlUpcomingTasks.Size = new Size(466, 217);
             pnlUpcomingTasks.TabIndex = 11;
@@ -74,16 +76,16 @@
             lstUpcomingTasks.Size = new Size(463, 164);
             lstUpcomingTasks.TabIndex = 9;
             // 
-            // lblUpcomingTasksTitle
+            // lblUpcomingTasks
             // 
-            lblUpcomingTasksTitle.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUpcomingTasksTitle.ForeColor = Color.FromArgb(32, 43, 60);
-            lblUpcomingTasksTitle.Location = new Point(3, 14);
-            lblUpcomingTasksTitle.Name = "lblUpcomingTasksTitle";
-            lblUpcomingTasksTitle.Size = new Size(400, 35);
-            lblUpcomingTasksTitle.TabIndex = 8;
-            lblUpcomingTasksTitle.Text = "Upcoming Tasks";
-            lblUpcomingTasksTitle.TextAlign = ContentAlignment.MiddleLeft;
+            lblUpcomingTasks.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblUpcomingTasks.ForeColor = Color.FromArgb(32, 43, 60);
+            lblUpcomingTasks.Location = new Point(3, 14);
+            lblUpcomingTasks.Name = "lblUpcomingTasks";
+            lblUpcomingTasks.Size = new Size(400, 35);
+            lblUpcomingTasks.TabIndex = 8;
+            lblUpcomingTasks.Text = "Upcoming Tasks";
+            lblUpcomingTasks.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // pnlProgressCard
             // 
@@ -91,7 +93,7 @@
             pnlProgressCard.BorderStyle = BorderStyle.FixedSingle;
             pnlProgressCard.Controls.Add(lblStudyProgress);
             pnlProgressCard.Controls.Add(lblProgressTitle);
-            pnlProgressCard.Location = new Point(12, 178);
+            pnlProgressCard.Location = new Point(537, 253);
             pnlProgressCard.Name = "pnlProgressCard";
             pnlProgressCard.Size = new Size(200, 120);
             pnlProgressCard.TabIndex = 10;
@@ -122,7 +124,7 @@
             pnlUpcomingCard.BorderStyle = BorderStyle.FixedSingle;
             pnlUpcomingCard.Controls.Add(lblUpcomingCount);
             pnlUpcomingCard.Controls.Add(lblUpcomingTitle);
-            pnlUpcomingCard.Location = new Point(536, 40);
+            pnlUpcomingCard.Location = new Point(537, 115);
             pnlUpcomingCard.Name = "pnlUpcomingCard";
             pnlUpcomingCard.Size = new Size(200, 120);
             pnlUpcomingCard.TabIndex = 9;
@@ -153,7 +155,7 @@
             pnlTasksCard.BorderStyle = BorderStyle.FixedSingle;
             pnlTasksCard.Controls.Add(lblTasksCount);
             pnlTasksCard.Controls.Add(lblTasksTitle);
-            pnlTasksCard.Location = new Point(285, 40);
+            pnlTasksCard.Location = new Point(286, 115);
             pnlTasksCard.Name = "pnlTasksCard";
             pnlTasksCard.Size = new Size(200, 120);
             pnlTasksCard.TabIndex = 8;
@@ -184,7 +186,7 @@
             pnlCoursesCard.BorderStyle = BorderStyle.FixedSingle;
             pnlCoursesCard.Controls.Add(lblCoursesCount);
             pnlCoursesCard.Controls.Add(lblCoursesTitle);
-            pnlCoursesCard.Location = new Point(12, 40);
+            pnlCoursesCard.Location = new Point(13, 115);
             pnlCoursesCard.Name = "pnlCoursesCard";
             pnlCoursesCard.Size = new Size(200, 120);
             pnlCoursesCard.TabIndex = 7;
@@ -209,11 +211,32 @@
             lblCoursesTitle.TabIndex = 6;
             lblCoursesTitle.Text = "My Courses";
             // 
+            // lblDashboardTitle
+            // 
+            lblDashboardTitle.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDashboardTitle.Location = new Point(20, 20);
+            lblDashboardTitle.Name = "lblDashboardTitle";
+            lblDashboardTitle.Size = new Size(400, 50);
+            lblDashboardTitle.TabIndex = 12;
+            lblDashboardTitle.Text = "Dashboard";
+            // 
+            // lblWelcome
+            // 
+            lblWelcome.Font = new Font("Segoe UI", 10F);
+            lblWelcome.ForeColor = Color.FromArgb(110, 120, 135);
+            lblWelcome.Location = new Point(33, 70);
+            lblWelcome.Name = "lblWelcome";
+            lblWelcome.Size = new Size(232, 29);
+            lblWelcome.TabIndex = 13;
+            lblWelcome.Text = "Welcome to UniTrack_UMY";
+            // 
             // ucDashboard
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(lblWelcome);
+            Controls.Add(lblDashboardTitle);
             Controls.Add(pnlUpcomingTasks);
             Controls.Add(pnlProgressCard);
             Controls.Add(pnlUpcomingCard);
@@ -234,7 +257,7 @@
 
         private Panel pnlUpcomingTasks;
         private ListBox lstUpcomingTasks;
-        private Label lblUpcomingTasksTitle;
+        private Label lblUpcomingTasks;
         private Panel pnlProgressCard;
         private Label lblStudyProgress;
         private Label lblProgressTitle;
@@ -247,5 +270,7 @@
         private Panel pnlCoursesCard;
         private Label lblCoursesCount;
         private Label lblCoursesTitle;
+        private Label lblDashboardTitle;
+        private Label lblWelcome;
     }
 }

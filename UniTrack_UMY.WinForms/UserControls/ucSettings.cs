@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+﻿
+using System;
 using System.Windows.Forms;
 using UniTrack_UMY.Core.Models;
 using UniTrack_UMY.Infrastructure.Services;
 using UniTrack_UMY.WinForms.Forms;
+using UniTrack_UMY.WinForms.Services;
 
 namespace UniTrack_UMY.WinForms.UserControls
 {
@@ -15,11 +12,12 @@ namespace UniTrack_UMY.WinForms.UserControls
     {
         private readonly SettingsService _settingsService;
         private AppSettings _settings;
-      
+        private LocalizationManager _localizationManager;
 
         public ucSettings()
         {
             InitializeComponent();
+
             _settingsService = new SettingsService();
             _settings = _settingsService.Load();
 
@@ -30,17 +28,43 @@ namespace UniTrack_UMY.WinForms.UserControls
             cmbLanguage.Items.Clear();
             cmbLanguage.Items.Add("English");
             cmbLanguage.Items.Add("Bahasa Indonesia");
+
             cmbTheme.SelectedIndex = (int)_settings.Theme;
             cmbLanguage.SelectedIndex = (int)_settings.Language;
+
+            ApplyLanguage();
+        }
+
+        private void ApplyLanguage()
+        {
+            bool isIndonesian =
+                _settings.Language == AppLanguage.Indonesian;
+
+            lblSettingsTitle.Text = isIndonesian
+                ? "Pengaturan"
+                : "Settings";
+            lblSettingsDescription.Text = isIndonesian
+    ? "Sesuaikan preferensi Anda"
+    : "Customize your preferences";
+            lblTheme.Text = isIndonesian
+                ? "Tampilan"
+                : "Appearance";
+
+            lblLanguage.Text = isIndonesian
+                ? "Bahasa"
+                : "Language";
+
+            btnSaveSettings.Text = isIndonesian
+                ? "Simpan Pengaturan"
+                : "Save Settings";
         }
 
         private void btnSaveSettings_Click(object sender, EventArgs e)
         {
-
             _settings.Theme = (AppTheme)cmbTheme.SelectedIndex;
             _settings.Language = (AppLanguage)cmbLanguage.SelectedIndex;
 
-            Form mainForm = this.FindForm();
+            Form mainForm = FindForm();
 
             if (mainForm is frmMain frm)
             {
@@ -50,6 +74,8 @@ namespace UniTrack_UMY.WinForms.UserControls
             {
                 _settingsService.Save(_settings);
             }
+
+            ApplyLanguage();
         }
     }
 }

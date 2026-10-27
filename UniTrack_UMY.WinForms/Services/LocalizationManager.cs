@@ -16,20 +16,32 @@ namespace UniTrack_UMY.WinForms.Services
                 { "NotesPlanner", "Notes & Planner" },
                 { "Settings", "Settings" },
                 { "Welcome", "Welcome to UniTrack" },
-                { "UpcomingTasks", "Upcoming Tasks" }
+                { "UpcomingTasks", "Upcoming Tasks" },
+
+                { "SettingsDescription", "Customize your preferences" },
+                { "MyCoursesDescription", "View your courses from MyKlass" },
+                { "TasksDescription", "View your tasks from MyKlass" },
+                { "ScheduleDescription", "View your schedule" },
+                { "NotesPlannerDescription", "Manage your notes and study plans" }
             };
 
         private readonly Dictionary<string, string> _indonesian =
             new Dictionary<string, string>
             {
                 { "Dashboard", "Dasbor" },
-                { "MyCourses", "Kursus saya" },
+                { "MyCourses", "Mata Kuliah Saya" },
                 { "Tasks", "Tugas" },
                 { "Schedule", "Jadwal" },
                 { "NotesPlanner", "Catatan & Perencana" },
                 { "Settings", "Pengaturan" },
-                { "Welcome", "Welcome to UniTrack" },
-                { "UpcomingTasks", "Tugas Mendatang" }
+                { "Welcome", "Selamat datang di UniTrack" },
+                { "UpcomingTasks", "Tugas Mendatang" },
+
+                { "SettingsDescription", "Sesuaikan preferensi Anda" },
+                { "MyCoursesDescription", "Lihat mata kuliah Anda dari MyKlass" },
+                { "TasksDescription", "Lihat tugas Anda dari MyKlass" },
+                { "ScheduleDescription", "Lihat jadwal Anda" },
+                { "NotesPlannerDescription", "Kelola catatan dan rencana belajar Anda" }
             };
 
         private readonly AppLanguage _language;

@@ -37,6 +37,7 @@
             btnAddNote = new Button();
             btnDeleteNote = new Button();
             btnSaveNote = new Button();
+            lblNotesPlannerDescription = new Label();
             SuspendLayout();
             // 
             // lblNotesPlannerTitle
@@ -54,7 +55,7 @@
             lvNotes.Columns.AddRange(new ColumnHeader[] { colTitle, columnHeader2 });
             lvNotes.FullRowSelect = true;
             lvNotes.GridLines = true;
-            lvNotes.Location = new Point(20, 90);
+            lvNotes.Location = new Point(20, 116);
             lvNotes.MultiSelect = false;
             lvNotes.Name = "lvNotes";
             lvNotes.Size = new Size(350, 350);
@@ -76,7 +77,7 @@
             // 
             txtNoteContent.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtNoteContent.Font = new Font("Segoe UI", 10F);
-            txtNoteContent.Location = new Point(400, 90);
+            txtNoteContent.Location = new Point(400, 116);
             txtNoteContent.Multiline = true;
             txtNoteContent.Name = "txtNoteContent";
             txtNoteContent.ScrollBars = ScrollBars.Vertical;
@@ -86,7 +87,7 @@
             // txtNoteTitle
             // 
             txtNoteTitle.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            txtNoteTitle.Location = new Point(400, 455);
+            txtNoteTitle.Location = new Point(400, 481);
             txtNoteTitle.Name = "txtNoteTitle";
             txtNoteTitle.Size = new Size(300, 27);
             txtNoteTitle.TabIndex = 4;
@@ -94,7 +95,7 @@
             // btnAddNote
             // 
             btnAddNote.Cursor = Cursors.Hand;
-            btnAddNote.Location = new Point(20, 470);
+            btnAddNote.Location = new Point(20, 496);
             btnAddNote.Name = "btnAddNote";
             btnAddNote.Size = new Size(150, 42);
             btnAddNote.TabIndex = 5;
@@ -104,7 +105,7 @@
             // btnDeleteNote
             // 
             btnDeleteNote.Cursor = Cursors.Hand;
-            btnDeleteNote.Location = new Point(185, 470);
+            btnDeleteNote.Location = new Point(185, 496);
             btnDeleteNote.Name = "btnDeleteNote";
             btnDeleteNote.Size = new Size(150, 42);
             btnDeleteNote.TabIndex = 6;
@@ -121,11 +122,23 @@
             btnSaveNote.Text = "Save Note";
             btnSaveNote.UseVisualStyleBackColor = true;
             // 
+            // lblNotesPlannerDescription
+            // 
+            lblNotesPlannerDescription.AutoSize = true;
+            lblNotesPlannerDescription.ForeColor = Color.FromArgb(110, 120, 135);
+            lblNotesPlannerDescription.Location = new Point(42, 73);
+            lblNotesPlannerDescription.Name = "lblNotesPlannerDescription";
+            lblNotesPlannerDescription.Size = new Size(249, 20);
+            lblNotesPlannerDescription.TabIndex = 8;
+            lblNotesPlannerDescription.Text = "Organize your notes and study plans";
+            lblNotesPlannerDescription.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // ucNotesPlanner
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(lblNotesPlannerDescription);
             Controls.Add(btnSaveNote);
             Controls.Add(btnDeleteNote);
             Controls.Add(btnAddNote);
@@ -150,5 +163,6 @@
         private Button btnAddNote;
         private Button btnDeleteNote;
         private Button btnSaveNote;
+        private Label lblNotesPlannerDescription;
     }
 }

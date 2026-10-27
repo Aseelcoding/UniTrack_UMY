@@ -35,6 +35,7 @@
             colStatus = new ColumnHeader();
             colAction = new ColumnHeader();
             btnOpenCourse = new Button();
+            lblCoursesDescription = new Label();
             SuspendLayout();
             // 
             // lblCoursesTitle
@@ -52,7 +53,7 @@
             lvCourses.Columns.AddRange(new ColumnHeader[] { colCourseName, colProgress, colStatus, colAction });
             lvCourses.FullRowSelect = true;
             lvCourses.GridLines = true;
-            lvCourses.Location = new Point(20, 90);
+            lvCourses.Location = new Point(20, 117);
             lvCourses.MultiSelect = false;
             lvCourses.Name = "lvCourses";
             lvCourses.Size = new Size(700, 370);
@@ -83,18 +84,30 @@
             // btnOpenCourse
             // 
             btnOpenCourse.Cursor = Cursors.Hand;
-            btnOpenCourse.Location = new Point(20, 490);
+            btnOpenCourse.Location = new Point(20, 508);
             btnOpenCourse.Name = "btnOpenCourse";
             btnOpenCourse.Size = new Size(150, 42);
             btnOpenCourse.TabIndex = 2;
             btnOpenCourse.Text = "Open Course";
             btnOpenCourse.UseVisualStyleBackColor = true;
             // 
+            // lblCoursesDescription
+            // 
+            lblCoursesDescription.AutoSize = true;
+            lblCoursesDescription.ForeColor = Color.FromArgb(110, 120, 135);
+            lblCoursesDescription.Location = new Point(33, 80);
+            lblCoursesDescription.Name = "lblCoursesDescription";
+            lblCoursesDescription.Size = new Size(253, 23);
+            lblCoursesDescription.TabIndex = 3;
+            lblCoursesDescription.Text = "View your courses from MyKlass";
+            lblCoursesDescription.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // ucMyCourses
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(lblCoursesDescription);
             Controls.Add(btnOpenCourse);
             Controls.Add(lvCourses);
             Controls.Add(lblCoursesTitle);
@@ -102,6 +115,7 @@
             Name = "ucMyCourses";
             Size = new Size(742, 598);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -113,5 +127,6 @@
         private ColumnHeader colStatus;
         private ColumnHeader colAction;
         private Button btnOpenCourse;
+        private Label lblCoursesDescription;
     }
 }

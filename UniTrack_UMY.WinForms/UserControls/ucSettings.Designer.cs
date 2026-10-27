@@ -34,6 +34,7 @@
             cmbLanguage = new ComboBox();
             lblLanguage = new Label();
             btnSaveSettings = new Button();
+            lblSettingsDescription = new Label();
             SuspendLayout();
             // 
             // lblSettingsTitle
@@ -48,7 +49,7 @@
             // lblTheme
             // 
             lblTheme.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTheme.Location = new Point(20, 90);
+            lblTheme.Location = new Point(20, 110);
             lblTheme.Name = "lblTheme";
             lblTheme.Size = new Size(200, 30);
             lblTheme.TabIndex = 1;
@@ -59,7 +60,7 @@
             cmbTheme.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTheme.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             cmbTheme.FormattingEnabled = true;
-            cmbTheme.Location = new Point(239, 90);
+            cmbTheme.Location = new Point(239, 110);
             cmbTheme.Name = "cmbTheme";
             cmbTheme.Size = new Size(250, 31);
             cmbTheme.TabIndex = 2;
@@ -69,7 +70,7 @@
             cmbLanguage.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbLanguage.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             cmbLanguage.FormattingEnabled = true;
-            cmbLanguage.Location = new Point(239, 156);
+            cmbLanguage.Location = new Point(239, 176);
             cmbLanguage.Name = "cmbLanguage";
             cmbLanguage.Size = new Size(250, 31);
             cmbLanguage.TabIndex = 4;
@@ -77,7 +78,7 @@
             // lblLanguage
             // 
             lblLanguage.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblLanguage.Location = new Point(20, 156);
+            lblLanguage.Location = new Point(20, 176);
             lblLanguage.Name = "lblLanguage";
             lblLanguage.Size = new Size(200, 30);
             lblLanguage.TabIndex = 3;
@@ -87,7 +88,7 @@
             // 
             btnSaveSettings.Cursor = Cursors.Hand;
             btnSaveSettings.FlatStyle = FlatStyle.Flat;
-            btnSaveSettings.Location = new Point(20, 238);
+            btnSaveSettings.Location = new Point(20, 258);
             btnSaveSettings.Name = "btnSaveSettings";
             btnSaveSettings.Size = new Size(160, 42);
             btnSaveSettings.TabIndex = 5;
@@ -95,11 +96,23 @@
             btnSaveSettings.UseVisualStyleBackColor = true;
             btnSaveSettings.Click += btnSaveSettings_Click;
             // 
+            // lblSettingsDescription
+            // 
+            lblSettingsDescription.AutoSize = true;
+            lblSettingsDescription.ForeColor = Color.FromArgb(110, 120, 135);
+            lblSettingsDescription.Location = new Point(44, 73);
+            lblSettingsDescription.Name = "lblSettingsDescription";
+            lblSettingsDescription.Size = new Size(222, 20);
+            lblSettingsDescription.TabIndex = 10;
+            lblSettingsDescription.Text = "Customize your app preferences";
+            lblSettingsDescription.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // ucSettings
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(lblSettingsDescription);
             Controls.Add(btnSaveSettings);
             Controls.Add(cmbLanguage);
             Controls.Add(lblLanguage);
@@ -109,6 +122,7 @@
             Name = "ucSettings";
             Size = new Size(742, 598);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -119,5 +133,6 @@
         private ComboBox cmbLanguage;
         private Label lblLanguage;
         private Button btnSaveSettings;
+        private Label lblSettingsDescription;
     }
 }

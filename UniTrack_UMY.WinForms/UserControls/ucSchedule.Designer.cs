@@ -32,12 +32,12 @@
             lvSchedule = new ListView();
             colDay = new ColumnHeader();
             colCourse = new ColumnHeader();
-            columnHeader1 = new ColumnHeader();
             colStartTime = new ColumnHeader();
             colEndTime = new ColumnHeader();
             colLocation = new ColumnHeader();
             btnAddSchedule = new Button();
             btnDeleteSchedule = new Button();
+            lblScheduleDescription = new Label();
             SuspendLayout();
             // 
             // lblScheduleTitle
@@ -52,10 +52,10 @@
             // lvSchedule
             // 
             lvSchedule.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            lvSchedule.Columns.AddRange(new ColumnHeader[] { colDay, colCourse, columnHeader1, colStartTime, colEndTime, colLocation });
+            lvSchedule.Columns.AddRange(new ColumnHeader[] { colDay, colCourse, colStartTime, colEndTime, colLocation });
             lvSchedule.FullRowSelect = true;
             lvSchedule.GridLines = true;
-            lvSchedule.Location = new Point(20, 90);
+            lvSchedule.Location = new Point(20, 103);
             lvSchedule.MultiSelect = false;
             lvSchedule.Name = "lvSchedule";
             lvSchedule.Size = new Size(680, 350);
@@ -91,7 +91,7 @@
             // btnAddSchedule
             // 
             btnAddSchedule.Cursor = Cursors.Hand;
-            btnAddSchedule.Location = new Point(20, 470);
+            btnAddSchedule.Location = new Point(20, 483);
             btnAddSchedule.Name = "btnAddSchedule";
             btnAddSchedule.Size = new Size(150, 42);
             btnAddSchedule.TabIndex = 2;
@@ -101,18 +101,30 @@
             // btnDeleteSchedule
             // 
             btnDeleteSchedule.Cursor = Cursors.Hand;
-            btnDeleteSchedule.Location = new Point(202, 470);
+            btnDeleteSchedule.Location = new Point(202, 483);
             btnDeleteSchedule.Name = "btnDeleteSchedule";
             btnDeleteSchedule.Size = new Size(150, 42);
             btnDeleteSchedule.TabIndex = 3;
             btnDeleteSchedule.Text = "Delete Schedule";
             btnDeleteSchedule.UseVisualStyleBackColor = true;
             // 
+            // lblScheduleDescription
+            // 
+            lblScheduleDescription.AutoSize = true;
+            lblScheduleDescription.ForeColor = Color.FromArgb(110, 120, 135);
+            lblScheduleDescription.Location = new Point(38, 72);
+            lblScheduleDescription.Name = "lblScheduleDescription";
+            lblScheduleDescription.Size = new Size(244, 20);
+            lblScheduleDescription.TabIndex = 9;
+            lblScheduleDescription.Text = "Keep your class schedule organized";
+            lblScheduleDescription.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // ucSchedule
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(lblScheduleDescription);
             Controls.Add(btnDeleteSchedule);
             Controls.Add(btnAddSchedule);
             Controls.Add(lvSchedule);
@@ -120,6 +132,7 @@
             Name = "ucSchedule";
             Size = new Size(742, 598);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -128,11 +141,11 @@
         private ListView lvSchedule;
         private ColumnHeader colDay;
         private ColumnHeader colCourse;
-        private ColumnHeader columnHeader1;
         private ColumnHeader colStartTime;
         private ColumnHeader colEndTime;
         private ColumnHeader colLocation;
         private Button btnAddSchedule;
         private Button btnDeleteSchedule;
+        private Label lblScheduleDescription;
     }
 }

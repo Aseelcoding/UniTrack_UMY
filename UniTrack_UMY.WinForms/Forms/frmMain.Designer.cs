@@ -38,11 +38,8 @@
             lblAppTitle = new Label();
             pnlContent = new Panel();
             pnlPageContent = new Panel();
-            lblPageTitle = new Label();
-            lblPageDescription = new Label();
             pnlSidebar.SuspendLayout();
             pnlContent.SuspendLayout();
-            pnlPageContent.SuspendLayout();
             SuspendLayout();
             // 
             // pnlSidebar
@@ -180,33 +177,10 @@
             // 
             // pnlPageContent
             // 
-            pnlPageContent.Controls.Add(lblPageTitle);
-            pnlPageContent.Controls.Add(lblPageDescription);
             pnlPageContent.Location = new Point(0, 3);
             pnlPageContent.Name = "pnlPageContent";
             pnlPageContent.Size = new Size(742, 598);
             pnlPageContent.TabIndex = 2;
-            // 
-            // lblPageTitle
-            // 
-            lblPageTitle.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPageTitle.Location = new Point(6, 5);
-            lblPageTitle.Name = "lblPageTitle";
-            lblPageTitle.Size = new Size(742, 40);
-            lblPageTitle.TabIndex = 0;
-            lblPageTitle.Text = "Dashboard";
-            lblPageTitle.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // lblPageDescription
-            // 
-            lblPageDescription.AutoSize = true;
-            lblPageDescription.ForeColor = Color.FromArgb(110, 120, 135);
-            lblPageDescription.Location = new Point(30, 50);
-            lblPageDescription.Name = "lblPageDescription";
-            lblPageDescription.Size = new Size(171, 23);
-            lblPageDescription.TabIndex = 1;
-            lblPageDescription.Text = "\tWelcome to UniTrack";
-            lblPageDescription.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // frmMain
             // 
@@ -224,8 +198,6 @@
             Text = "UniTrack - My Courses";
             pnlSidebar.ResumeLayout(false);
             pnlContent.ResumeLayout(false);
-            pnlPageContent.ResumeLayout(false);
-            pnlPageContent.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -241,7 +213,5 @@
         private Button btnSchedule;
         private Button btnDashboard;
         private Panel pnlPageContent;
-        private Label lblPageDescription;
-        private Label lblPageTitle;
     }
 }
