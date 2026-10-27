@@ -14,7 +14,7 @@ namespace UniTrack_UMY.Infrastructure.Services
             if (string.IsNullOrWhiteSpace(html))
                 return null;
 
-            var doc = new HtmlDocument();
+            var doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(html);
 
             var submissionTable =
