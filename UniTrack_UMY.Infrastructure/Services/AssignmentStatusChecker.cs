@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using UniTrack_UMY.Core.Models;
 
 namespace UniTrack_UMY.Infrastructure.Services
 {
-    public class AssignmentStatusChecker
+    internal class AssignmentStatusChecker
     {
-        public UniTrack_UMY.Core.Models.TaskItem.TaskStatus? CheckStatus(string html)
+        public TaskItem.TaskStatus? CheckStatus(string html)
         {
             if (string.IsNullOrWhiteSpace(html))
                 return null;
@@ -41,15 +42,15 @@ namespace UniTrack_UMY.Infrastructure.Services
                 StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 return lateCell != null
-                    ? UniTrack_UMY.Core.Models.TaskItem.TaskStatus.SubmittedLate
-                    : UniTrack_UMY.Core.Models.TaskItem.TaskStatus.Completed;
+                    ? TaskItem.TaskStatus.SubmittedLate
+                    : TaskItem.TaskStatus.Completed;
             }
 
             if (statusText.IndexOf(
                 "No attempt",
                 StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                return UniTrack_UMY.Core.Models.TaskItem.TaskStatus.Overdue;
+                return TaskItem.TaskStatus.Overdue;
             }
 
             return null;
