@@ -9,7 +9,7 @@ using static UniTrack_UMY.Core.Models.TaskItem;
 
 namespace UniTrack_UMY.Infrastructure.Services
 {
-    internal class TaskParser
+    public class TaskParser
     {
         public List<TaskItem> ParseTasks(
             string html,

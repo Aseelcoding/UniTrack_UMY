@@ -1,7 +1,13 @@
 ﻿
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using System.Windows.Forms;
-
+using Microsoft.Web.WebView2.Core;
+using UniTrack_UMY.Core.Models;
+using UniTrack_UMY.Infrastructure.Services;
+using System.Threading.Tasks;
 namespace UniTrack_UMY.WinForms.Forms
 {
     public partial class frmLogin : Form
@@ -11,7 +17,6 @@ namespace UniTrack_UMY.WinForms.Forms
         public frmLogin()
         {
             InitializeComponent();
-
             Load += frmLogin_Load;
         }
 
@@ -25,23 +30,15 @@ namespace UniTrack_UMY.WinForms.Forms
                     CoreWebView2_NavigationCompleted;
 
                 webViewLogin.CoreWebView2.Navigate(
-                    "https://myklass-eng.umy.ac.id/login/index.php"
-                );
+                    "https://myklass-eng.umy.ac.id/login/index.php");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Failed to open MyKlass:\n{ex.Message}",
-                    "UniTrack",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                ShowError("Failed to open MyKlass", ex);
             }
         }
 
-        private void CoreWebView2_NavigationCompleted(
-            object? sender,
-            Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e)
+        private async void CoreWebView2_NavigationCompleted(object? sender,CoreWebView2NavigationCompletedEventArgs e)
         {
             if (!e.IsSuccess || _loginDetected)
                 return;
@@ -57,13 +54,51 @@ namespace UniTrack_UMY.WinForms.Forms
                 return;
 
             _loginDetected = true;
+            await Task.Delay(3000);
+            try
+            {
+                string result =
+                    await webViewLogin.CoreWebView2.ExecuteScriptAsync(
+                        "document.documentElement.outerHTML");
 
+                string html = JsonSerializer.Deserialize<string>(result) ?? "";
+
+                var parser = new CourseParser();
+                List<Course> courses = parser.ParseCourses(html);
+
+                if (courses.Count == 0)
+                {
+                    MessageBox.Show(
+                        "Login detected, but no courses were found on this page.",
+                        "UniTrack",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    return;
+                }
+
+                string courseNames = string.Join(
+                    Environment.NewLine,
+                    courses.Select(c => c.Name));
+
+                MessageBox.Show(
+                    $"Found {courses.Count} courses:{Environment.NewLine}{Environment.NewLine}{courseNames}",
+                    "UniTrack",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                ShowError("Failed to extract courses", ex);
+            }
+        }
+
+        private void ShowError(string title, Exception ex)
+        {
             MessageBox.Show(
-                "Login detected successfully.",
+                $"{title}:{Environment.NewLine}{ex.Message}",
                 "UniTrack",
                 MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+                MessageBoxIcon.Error);
         }
     }
 }

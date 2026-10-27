@@ -7,7 +7,7 @@ using HtmlAgilityPack;
 using UniTrack_UMY.Core.Models;
 namespace UniTrack_UMY.Infrastructure.Services
 {
-    internal class CourseParser
+    public class CourseParser
     {
         public List<Course> ParseCourses(string html)
         {
