@@ -1,13 +1,13 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Web.WebView2.Core;
 using UniTrack_UMY.Core.Models;
 using UniTrack_UMY.Infrastructure.Services;
-using System.Threading.Tasks;
+
 namespace UniTrack_UMY.WinForms.Forms
 {
     public partial class frmLogin : Form
@@ -38,7 +38,9 @@ namespace UniTrack_UMY.WinForms.Forms
             }
         }
 
-        private async void CoreWebView2_NavigationCompleted(object? sender,CoreWebView2NavigationCompletedEventArgs e)
+        private async void CoreWebView2_NavigationCompleted(
+            object? sender,
+            CoreWebView2NavigationCompletedEventArgs e)
         {
             if (!e.IsSuccess || _loginDetected)
                 return;
@@ -54,41 +56,48 @@ namespace UniTrack_UMY.WinForms.Forms
                 return;
 
             _loginDetected = true;
+
             await Task.Delay(3000);
+
             try
             {
                 string result =
                     await webViewLogin.CoreWebView2.ExecuteScriptAsync(
                         "document.documentElement.outerHTML");
 
-                string html = JsonSerializer.Deserialize<string>(result) ?? "";
+                string html =
+                    JsonSerializer.Deserialize<string>(result) ?? "";
 
                 var parser = new CourseParser();
                 List<Course> courses = parser.ParseCourses(html);
 
                 if (courses.Count == 0)
                 {
+                    _loginDetected = false;
+
                     MessageBox.Show(
                         "Login detected, but no courses were found on this page.",
                         "UniTrack",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
+
                     return;
                 }
 
                 Hide();
 
-                using (var mainForm = new frmMain(courses))
+                var mainForm = new frmMain(courses);
+
+                mainForm.FormClosed += (s, args) =>
                 {
-
-                    mainForm.TopMost = true;
-                    mainForm.ShowDialog();
-                }
-
-              
+                    Close();
+                };
+                mainForm.TopMost = true;
+                mainForm.Show();
             }
             catch (Exception ex)
             {
+                _loginDetected = false;
                 ShowError("Failed to extract courses", ex);
             }
         }

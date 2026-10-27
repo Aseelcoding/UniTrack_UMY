@@ -11,6 +11,7 @@ namespace UniTrack_UMY.WinForms
         static void Main()
         {
             ApplicationConfiguration.Initialize();
+
             Application.Run(new frmLogin());
         }
     }

@@ -25,7 +25,7 @@ namespace UniTrack_UMY.WinForms.Forms
         public frmMain(List<Course> courses)
         {
             InitializeComponent();
-
+           
             _settingsService = new SettingsService();
             _settings = _settingsService.Load();
             _courses = courses ?? new List<Course>();
