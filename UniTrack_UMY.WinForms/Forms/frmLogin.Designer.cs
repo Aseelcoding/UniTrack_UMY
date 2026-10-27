@@ -28,12 +28,39 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "frmLogin";
+            webViewLogin = new Microsoft.Web.WebView2.WinForms.WebView2();
+            ((System.ComponentModel.ISupportInitialize)webViewLogin).BeginInit();
+            SuspendLayout();
+            // 
+            // webViewLogin
+            // 
+            webViewLogin.AllowExternalDrop = true;
+            webViewLogin.CreationProperties = null;
+            webViewLogin.DefaultBackgroundColor = Color.White;
+            webViewLogin.Dock = DockStyle.Fill;
+            webViewLogin.Location = new Point(0, 0);
+            webViewLogin.Name = "webViewLogin";
+            webViewLogin.Size = new Size(982, 653);
+            webViewLogin.TabIndex = 0;
+            webViewLogin.ZoomFactor = 1D;
+            // 
+            // frmLogin
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(982, 653);
+            Controls.Add(webViewLogin);
+            MaximumSize = new Size(1000, 700);
+            MinimumSize = new Size(800, 600);
+            Name = "frmLogin";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "UniTrack - Login";
+            ((System.ComponentModel.ISupportInitialize)webViewLogin).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Microsoft.Web.WebView2.WinForms.WebView2 webViewLogin;
     }
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+﻿
+using System;
 using System.Windows.Forms;
 
 namespace UniTrack_UMY.WinForms.Forms
@@ -13,6 +9,29 @@ namespace UniTrack_UMY.WinForms.Forms
         public frmLogin()
         {
             InitializeComponent();
+
+            Load += frmLogin_Load;
+        }
+
+        private async void frmLogin_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                await webViewLogin.EnsureCoreWebView2Async();
+
+                webViewLogin.CoreWebView2.Navigate(
+                    "https://myklass-eng.umy.ac.id/login/index.php"
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Failed to open MyKlass:\n{ex.Message}",
+                    "UniTrack",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
     }
 }
