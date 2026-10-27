@@ -31,13 +31,15 @@
             lblNotesPlannerTitle = new Label();
             lvNotes = new ListView();
             colTitle = new ColumnHeader();
-            columnHeader2 = new ColumnHeader();
+            colCourse = new ColumnHeader();
+            colNoteContent = new ColumnHeader();
             txtNoteContent = new TextBox();
             txtNoteTitle = new TextBox();
             btnAddNote = new Button();
             btnDeleteNote = new Button();
             btnSaveNote = new Button();
             lblNotesPlannerDescription = new Label();
+            cmbNoteCourse = new ComboBox();
             SuspendLayout();
             // 
             // lblNotesPlannerTitle
@@ -52,7 +54,7 @@
             // lvNotes
             // 
             lvNotes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            lvNotes.Columns.AddRange(new ColumnHeader[] { colTitle, columnHeader2 });
+            lvNotes.Columns.AddRange(new ColumnHeader[] { colTitle, colCourse, colNoteContent });
             lvNotes.FullRowSelect = true;
             lvNotes.GridLines = true;
             lvNotes.Location = new Point(20, 116);
@@ -66,12 +68,17 @@
             // colTitle
             // 
             colTitle.Text = "Title";
-            colTitle.Width = 200;
+            colTitle.Width = 150;
             // 
-            // columnHeader2
+            // colCourse
             // 
-            columnHeader2.Text = "Course";
-            columnHeader2.Width = 130;
+            colCourse.Text = "Course";
+            colCourse.Width = 130;
+            // 
+            // colNoteContent
+            // 
+            colNoteContent.Text = "Note Content";
+            colNoteContent.Width = 250;
             // 
             // txtNoteContent
             // 
@@ -95,7 +102,7 @@
             // btnAddNote
             // 
             btnAddNote.Cursor = Cursors.Hand;
-            btnAddNote.Location = new Point(20, 496);
+            btnAddNote.Location = new Point(20, 538);
             btnAddNote.Name = "btnAddNote";
             btnAddNote.Size = new Size(150, 42);
             btnAddNote.TabIndex = 5;
@@ -105,7 +112,7 @@
             // btnDeleteNote
             // 
             btnDeleteNote.Cursor = Cursors.Hand;
-            btnDeleteNote.Location = new Point(185, 496);
+            btnDeleteNote.Location = new Point(185, 538);
             btnDeleteNote.Name = "btnDeleteNote";
             btnDeleteNote.Size = new Size(150, 42);
             btnDeleteNote.TabIndex = 6;
@@ -133,11 +140,21 @@
             lblNotesPlannerDescription.Text = "Organize your notes and study plans";
             lblNotesPlannerDescription.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // cmbNoteCourse
+            // 
+            cmbNoteCourse.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbNoteCourse.FormattingEnabled = true;
+            cmbNoteCourse.Location = new Point(20, 481);
+            cmbNoteCourse.Name = "cmbNoteCourse";
+            cmbNoteCourse.Size = new Size(350, 28);
+            cmbNoteCourse.TabIndex = 9;
+            // 
             // ucNotesPlanner
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(cmbNoteCourse);
             Controls.Add(lblNotesPlannerDescription);
             Controls.Add(btnSaveNote);
             Controls.Add(btnDeleteNote);
@@ -157,12 +174,14 @@
         private Label lblNotesPlannerTitle;
         private ListView lvNotes;
         private ColumnHeader colTitle;
-        private ColumnHeader columnHeader2;
+        private ColumnHeader colCourse;
         private TextBox txtNoteContent;
         private TextBox txtNoteTitle;
         private Button btnAddNote;
         private Button btnDeleteNote;
         private Button btnSaveNote;
         private Label lblNotesPlannerDescription;
+        private ComboBox cmbNoteCourse;
+        private ColumnHeader colNoteContent;
     }
 }

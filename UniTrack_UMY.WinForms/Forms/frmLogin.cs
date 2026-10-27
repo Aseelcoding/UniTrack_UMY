@@ -76,15 +76,16 @@ namespace UniTrack_UMY.WinForms.Forms
                     return;
                 }
 
-                string courseNames = string.Join(
-                    Environment.NewLine,
-                    courses.Select(c => c.Name));
+                Hide();
 
-                MessageBox.Show(
-                    $"Found {courses.Count} courses:{Environment.NewLine}{Environment.NewLine}{courseNames}",
-                    "UniTrack",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                using (var mainForm = new frmMain(courses))
+                {
+
+                    mainForm.TopMost = true;
+                    mainForm.ShowDialog();
+                }
+
+              
             }
             catch (Exception ex)
             {

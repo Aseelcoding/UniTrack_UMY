@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using UniTrack_UMY.Core.Models;
 using UniTrack_UMY.Infrastructure.Services;
@@ -15,17 +16,22 @@ namespace UniTrack_UMY.WinForms.Forms
         private ThemeColors _themeColors;
         private ThemeManager _themeManager;
         private LocalizationManager _localizationManager;
+        private readonly List<Course> _courses;
 
-        public frmMain()
+        public frmMain() : this(new List<Course>())
+        {
+        }
+
+        public frmMain(List<Course> courses)
         {
             InitializeComponent();
 
             _settingsService = new SettingsService();
             _settings = _settingsService.Load();
+            _courses = courses ?? new List<Course>();
 
             _themeColors = new ThemeColors(_settings.Theme);
             _themeManager = new ThemeManager(_themeColors);
-
             _localizationManager =
                 new LocalizationManager(_settings.Language);
 
@@ -83,22 +89,24 @@ namespace UniTrack_UMY.WinForms.Forms
             _themeManager.ApplyTheme(this);
             ApplyLanguage();
 
-            // Refresh the current page so it loads the new settings.
-            if (pnlPageContent.Controls.Count > 0)
-            {
-                if (pnlPageContent.Controls[0] is ucDashboard)
-                    ShowPage(new ucDashboard());
-                else if (pnlPageContent.Controls[0] is ucMyCourses)
-                    ShowPage(new ucMyCourses());
-                else if (pnlPageContent.Controls[0] is ucTasks)
-                    ShowPage(new ucTasks());
-                else if (pnlPageContent.Controls[0] is ucSchedule)
-                    ShowPage(new ucSchedule());
-                else if (pnlPageContent.Controls[0] is ucNotesPlanner)
-                    ShowPage(new ucNotesPlanner());
-                else if (pnlPageContent.Controls[0] is ucSettings)
-                    ShowPage(new ucSettings());
-            }
+            if (pnlPageContent.Controls.Count == 0)
+                return;
+
+            UserControl currentPage =
+                pnlPageContent.Controls[0] as UserControl;
+
+            if (currentPage is ucDashboard)
+                ShowPage(new ucDashboard());
+            else if (currentPage is ucMyCourses)
+                ShowPage(new ucMyCourses());
+            else if (currentPage is ucTasks)
+                ShowPage(new ucTasks());
+            else if (currentPage is ucSchedule)
+                ShowPage(new ucSchedule());
+            else if (currentPage is ucNotesPlanner)
+                ShowPage(new ucNotesPlanner(_courses));
+            else if (currentPage is ucSettings)
+                ShowPage(new ucSettings());
         }
 
         private void ChangeTheme(AppTheme theme)
@@ -151,7 +159,7 @@ namespace UniTrack_UMY.WinForms.Forms
 
         private void btnNotesPlanner_Click(object sender, EventArgs e)
         {
-            ShowPage(new ucNotesPlanner());
+            ShowPage(new ucNotesPlanner(_courses));
         }
 
         private void btnSettings_Click(object sender, EventArgs e)

@@ -1,18 +1,17 @@
+
+using System;
+using System.Windows.Forms;
 using UniTrack_UMY.WinForms.Forms;
+
 namespace UniTrack_UMY.WinForms
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new frmMain());
+            Application.Run(new frmLogin());
         }
     }
 }
