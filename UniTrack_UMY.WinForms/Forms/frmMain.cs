@@ -211,7 +211,7 @@ namespace UniTrack_UMY.WinForms.Forms
             else if (currentPage is ucTasks)
                 ShowPage(CreateTasks());
             else if (currentPage is ucMyCourses)
-                ShowPage(new ucMyCourses());
+                ShowPage(new ucMyCourses(_courses));
             else if (currentPage is ucSchedule)
                 ShowPage(new ucSchedule());
             else if (currentPage is ucNotesPlanner)
