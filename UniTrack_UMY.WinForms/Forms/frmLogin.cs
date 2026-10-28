@@ -1,12 +1,13 @@
 ﻿
+using Microsoft.Web.WebView2.Core;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Web.WebView2.Core;
 using UniTrack_UMY.Core.Models;
 using UniTrack_UMY.Infrastructure.Services;
+using UniTrack_UMY.WinForms.Services;
 
 namespace UniTrack_UMY.WinForms.Forms
 {
@@ -86,7 +87,8 @@ namespace UniTrack_UMY.WinForms.Forms
 
                 Hide();
 
-                var mainForm = new frmMain(courses);
+                var htmlFetcher = new WebViewHtmlFetcher(webViewLogin);
+                var mainForm = new frmMain(courses, htmlFetcher);
 
                 mainForm.FormClosed += (s, args) =>
                 {

@@ -54,15 +54,24 @@ namespace UniTrack_UMY.WinForms.Services
                     };
 
                 EventHandler<CoreWebView2NavigationCompletedEventArgs>
-                    completedHandler = (sender, e) =>
-                    {
-                        if (expectedNavigationId != 0 &&
-                            e.NavigationId == expectedNavigationId)
-                        {
-                            completion.TrySetResult(true);
-                        }
-                    };
-
+     completedHandler = (sender, e) =>
+     {
+         if (expectedNavigationId != 0 &&
+             e.NavigationId == expectedNavigationId)
+         {
+             if (e.IsSuccess)
+             {
+                 
+                 completion.TrySetResult(true);
+             }
+             else
+             {
+                 completion.TrySetException(
+                     new InvalidOperationException(
+                         $"WebView2 navigation failed: {e.WebErrorStatus}"));
+             }
+         }
+     };
                 _webView.NavigationStarting += startingHandler;
                 _webView.NavigationCompleted += completedHandler;
 
