@@ -255,7 +255,7 @@ namespace UniTrack_UMY.WinForms.Forms
 
         private void btnMyCourses_Click(object sender, EventArgs e)
         {
-            ShowPage(new ucMyCourses());
+            ShowPage(new ucMyCourses(_courses));
         }
 
         private void btnTasks_Click(object sender, EventArgs e)
