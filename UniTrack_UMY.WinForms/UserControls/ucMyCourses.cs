@@ -82,13 +82,20 @@ namespace UniTrack_UMY.WinForms.UserControls
                 ? "Buka Mata Kuliah"
                 : "Open Course";
         }
+
         private void btnOpenCourse_Click(object sender, EventArgs e)
         {
+            AppSettings settings = _settingsService.Load();
+            bool isIndonesian =
+                settings.Language == AppLanguage.Indonesian;
+
             if (lvCourses.SelectedItems.Count == 0)
             {
                 MessageBox.Show(
-                    "Please select a course first.",
-                    "My Courses",
+                    isIndonesian
+                        ? "Silakan pilih mata kuliah terlebih dahulu."
+                        : "Please select a course first.",
+                    isIndonesian ? "Mata Kuliah Saya" : "My Courses",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 
@@ -98,7 +105,10 @@ namespace UniTrack_UMY.WinForms.UserControls
             if (!(lvCourses.SelectedItems[0].Tag is Course course))
                 return;
 
-            if (!Uri.TryCreate(course.Url, UriKind.Absolute, out Uri uri) ||
+            if (!Uri.TryCreate(
+                    course.Url,
+                    UriKind.Absolute,
+                    out Uri uri) ||
                 uri.Scheme != Uri.UriSchemeHttps ||
                 !string.Equals(
                     uri.Host,
@@ -106,19 +116,36 @@ namespace UniTrack_UMY.WinForms.UserControls
                     StringComparison.OrdinalIgnoreCase))
             {
                 MessageBox.Show(
-                    "The course URL is invalid.",
-                    "My Courses",
+                    isIndonesian
+                        ? "URL mata kuliah tidak valid."
+                        : "The course URL is invalid.",
+                    isIndonesian ? "Mata Kuliah Saya" : "My Courses",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
             }
 
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            try
             {
-                FileName = uri.AbsoluteUri,
-                UseShellExecute = true
-            });
+                System.Diagnostics.Process.Start(
+                    new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = uri.AbsoluteUri,
+                        UseShellExecute = true
+                    });
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(
+                    isIndonesian
+                        ? "Tidak dapat membuka mata kuliah di browser."
+                        : "Could not open the course in your browser.",
+                    isIndonesian ? "Mata Kuliah Saya" : "My Courses",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
+
     }
 }
