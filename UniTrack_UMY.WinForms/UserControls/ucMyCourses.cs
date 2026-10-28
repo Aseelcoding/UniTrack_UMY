@@ -31,23 +31,36 @@ namespace UniTrack_UMY.WinForms.UserControls
         }
         private void PopulateCourses()
         {
-            lvCourses.Items.Clear();
+            lvCourses.BeginUpdate();
 
-            foreach (Course course in _courses)
+            try
             {
-                string progress = course.HasProgress
-                    ? course.ProgressPercent.ToString("0.#") + "%"
-                    : "—";
+                lvCourses.Items.Clear();
 
-                var item = new ListViewItem(course.Name);
+                foreach (Course course in _courses)
+                {
+                    string progress = course.HasProgress
+                        ? course.ProgressPercent.ToString("0.#") + "%"
+                        : "—";
 
-                item.SubItems.Add(progress);
-                item.SubItems.Add("Available");
-                item.SubItems.Add(string.Empty);
+                    string status = course.HasProgress
+                        ? "Progress available"
+                        : "Enrolled";
 
-                item.Tag = course;
+                    var item = new ListViewItem(course.Name);
 
-                lvCourses.Items.Add(item);
+                    item.SubItems.Add(progress);
+                    item.SubItems.Add(status);
+                    item.SubItems.Add("MyKlass");
+
+                    item.Tag = course;
+
+                    lvCourses.Items.Add(item);
+                }
+            }
+            finally
+            {
+                lvCourses.EndUpdate();
             }
         }
         private void ApplyLanguage()
