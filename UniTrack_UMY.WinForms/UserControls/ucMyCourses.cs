@@ -28,6 +28,7 @@ namespace UniTrack_UMY.WinForms.UserControls
             }
 
             PopulateCourses();
+            btnOpenCourse.Enabled = lvCourses.SelectedItems.Count > 0;
         }
 
         private void PopulateCourses()
@@ -177,5 +178,9 @@ namespace UniTrack_UMY.WinForms.UserControls
             }
         }
 
+        private void lvCourses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnOpenCourse.Enabled = lvCourses.SelectedItems.Count > 0;
+        }
     }
 }

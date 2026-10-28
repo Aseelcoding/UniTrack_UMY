@@ -60,6 +60,7 @@
             lvCourses.TabIndex = 1;
             lvCourses.UseCompatibleStateImageBehavior = false;
             lvCourses.View = View.Details;
+            lvCourses.SelectedIndexChanged += lvCourses_SelectedIndexChanged;
             // 
             // colCourseName
             // 
