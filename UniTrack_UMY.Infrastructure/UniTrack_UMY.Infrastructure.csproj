@@ -10,7 +10,9 @@
     <PackageReference Include="HtmlAgilityPack" Version="1.13.1" />
 	  
   </ItemGroup>
-
+	<ItemGroup>
+		<InternalsVisibleTo Include="UniTrack_UMY.Tests" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UniTrack_UMY.Core\UniTrack_UMY.Core.csproj" />
   </ItemGroup>

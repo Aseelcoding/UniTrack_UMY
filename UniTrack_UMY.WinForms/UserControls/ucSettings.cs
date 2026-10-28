@@ -12,7 +12,7 @@ namespace UniTrack_UMY.WinForms.UserControls
     {
         private readonly SettingsService _settingsService;
         private AppSettings _settings;
-        private LocalizationManager _localizationManager;
+       
 
         public ucSettings()
         {

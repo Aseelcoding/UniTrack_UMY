@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using UniTrack_UMY.Core.Models;
+using System.Linq;
 using static UniTrack_UMY.Core.Models.TaskItem;
 
 namespace UniTrack_UMY.Infrastructure.Services
