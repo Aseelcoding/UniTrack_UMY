@@ -83,5 +83,43 @@ namespace UniTrack_UMY.WinForms.UserControls
                 ? "Buka Mata Kuliah"
                 : "Open Course";
         }
+        private void btnOpenCourse_Click(object sender, EventArgs e)
+        {
+            if (lvCourses.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(
+                    "Please select a course first.",
+                    "My Courses",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            if (!(lvCourses.SelectedItems[0].Tag is Course course))
+                return;
+
+            if (!Uri.TryCreate(course.Url, UriKind.Absolute, out Uri uri) ||
+                uri.Scheme != Uri.UriSchemeHttps ||
+                !string.Equals(
+                    uri.Host,
+                    "myklass-eng.umy.ac.id",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show(
+                    "The course URL is invalid.",
+                    "My Courses",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = uri.AbsoluteUri,
+                UseShellExecute = true
+            });
+        }
     }
 }

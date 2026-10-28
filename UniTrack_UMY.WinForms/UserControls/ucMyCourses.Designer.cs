@@ -90,6 +90,7 @@
             btnOpenCourse.TabIndex = 2;
             btnOpenCourse.Text = "Open Course";
             btnOpenCourse.UseVisualStyleBackColor = true;
+            btnOpenCourse.Click += btnOpenCourse_Click;
             // 
             // lblCoursesDescription
             // 
