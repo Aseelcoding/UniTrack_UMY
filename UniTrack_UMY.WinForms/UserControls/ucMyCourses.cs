@@ -29,8 +29,24 @@ namespace UniTrack_UMY.WinForms.UserControls
 
             PopulateCourses();
         }
+
         private void PopulateCourses()
         {
+            AppSettings settings = _settingsService.Load();
+
+            bool isIndonesian =
+                settings.Language == AppLanguage.Indonesian;
+
+            string progressAvailable = isIndonesian
+                ? "Progres tersedia"
+                : "Progress available";
+
+            string enrolled = isIndonesian
+                ? "Terdaftar"
+                : "Enrolled";
+
+            string myKlass = "MyKlass";
+
             lvCourses.BeginUpdate();
 
             try
@@ -44,14 +60,14 @@ namespace UniTrack_UMY.WinForms.UserControls
                         : "—";
 
                     string status = course.HasProgress
-                        ? "Progress available"
-                        : "Enrolled";
+                        ? progressAvailable
+                        : enrolled;
 
                     var item = new ListViewItem(course.Name);
 
                     item.SubItems.Add(progress);
                     item.SubItems.Add(status);
-                    item.SubItems.Add("MyKlass");
+                    item.SubItems.Add(myKlass);
 
                     item.Tag = course;
 
@@ -63,6 +79,7 @@ namespace UniTrack_UMY.WinForms.UserControls
                 lvCourses.EndUpdate();
             }
         }
+
         private void ApplyLanguage()
         {
             AppSettings settings = _settingsService.Load();
