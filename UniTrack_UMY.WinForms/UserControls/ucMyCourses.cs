@@ -4,7 +4,6 @@ using UniTrack_UMY.Core.Models;
 using UniTrack_UMY.Infrastructure.Services;
 using System.Collections.Generic;
 using System.Linq;
-using UniTrack_UMY.Core.Models;
 namespace UniTrack_UMY.WinForms.UserControls
 {
     public partial class ucMyCourses : UserControl
@@ -43,8 +42,8 @@ namespace UniTrack_UMY.WinForms.UserControls
                 var item = new ListViewItem(course.Name);
 
                 item.SubItems.Add(progress);
-                item.SubItems.Add("Found");
-                item.SubItems.Add("Open");
+                item.SubItems.Add("Available");
+                item.SubItems.Add(string.Empty);
 
                 item.Tag = course;
 
