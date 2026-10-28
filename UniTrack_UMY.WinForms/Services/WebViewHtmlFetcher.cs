@@ -90,7 +90,7 @@ namespace UniTrack_UMY.WinForms.Services
                     }
 
                     await Task.Delay(500);
-
+                    await completion.Task;
                     string json =
                         await _webView.CoreWebView2.ExecuteScriptAsync(
                             "document.documentElement.outerHTML");
