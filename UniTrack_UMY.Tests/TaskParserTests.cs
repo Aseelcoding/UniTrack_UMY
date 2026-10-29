@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Linq;
 using UniTrack_UMY.Core.Models;
@@ -161,6 +161,52 @@ namespace UniTrack_UMY.Tests
             Assert.Equal(2, result.Count);
             Assert.Equal("Past Assignment", result.First().Title);
             Assert.Equal("Future Assignment", result.Last().Title);
+        }
+
+        [Fact]
+        public void ParseTasks_ExtractsModuleWeek()
+        {
+            string html = @"
+                <li class='section main clearfix' id='section-1'>
+                    <h3 class='sectionname'><span>Week 1</span></h3>
+                    <div class='content'>
+                        <ul>
+                            <li class='activity-wrapper modtype_assign'>
+                                <a class='aalink' href='/assign/1'>
+                                    <span class='instancename'>Assignment One</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>";
+
+            var result = _parser.ParseTasks(html, "123");
+
+            var task = Assert.Single(result);
+
+            Assert.Equal("Week 1", task.ModuleWeek);
+        }
+
+        [Fact]
+        public void ParseTasks_CompletedQuizPastDue_IsCompleted()
+        {
+            string html = @"
+                <li class='activity-wrapper modtype_quiz'>
+                    <a class='aalink' href='/quiz/1'>
+                        <span class='instancename'>Past Quiz</span>
+                    </a>
+                    <div data-region='activity-dates'>
+                        Due: 01 Jan 2000
+                    </div>
+                    <span>Completed</span>
+                </li>";
+
+            var result = _parser.ParseTasks(html, "123");
+
+            var task = Assert.Single(result);
+
+            Assert.Equal(TaskItem.TaskType.Quiz, task.Type);
+            Assert.Equal(TaskItem.TaskStatus.Completed, task.Status);
         }
     }
 }

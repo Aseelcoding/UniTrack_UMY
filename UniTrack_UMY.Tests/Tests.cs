@@ -1,4 +1,4 @@
-﻿
+
 using UniTrack_UMY.Core.Models;
 using Xunit;
 
@@ -15,11 +15,11 @@ namespace UniTrack_UMY.Tests
         }
 
         [Fact]
-        public void NewSettings_DefaultThemeIsLight()
+        public void NewSettings_DefaultThemeIsDark()
         {
             var settings = new AppSettings();
 
-            Assert.Equal(AppTheme.Light, settings.Theme);
+            Assert.Equal(AppTheme.Dark, settings.Theme);
         }
 
         [Fact]

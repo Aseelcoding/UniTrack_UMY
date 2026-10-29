@@ -1,12 +1,10 @@
-﻿using HtmlAgilityPack;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UniTrack_UMY.Core.Models;
-using System.Linq;
-using static UniTrack_UMY.Core.Models.TaskItem;
 
 namespace UniTrack_UMY.Infrastructure.Services
 {
@@ -51,7 +49,7 @@ namespace UniTrack_UMY.Infrastructure.Services
 
                     string title = CleanText(titleNode.InnerText);
 
-                    TaskType type;
+                    TaskItem.TaskType type;
 
                     if (classAttribute.Contains("modtype_quiz") ||
                         title.IndexOf("UCP",
@@ -61,14 +59,15 @@ namespace UniTrack_UMY.Infrastructure.Services
                         title.IndexOf("Ujian",
                             StringComparison.OrdinalIgnoreCase) >= 0)
                     {
-                        type = TaskType.Quiz;
+                        type = TaskItem.TaskType.Quiz;
                     }
                     else if (classAttribute.Contains("modtype_assign"))
                     {
-                        type = TaskType.Assignment;
+                        type = TaskItem.TaskType.Assignment;
                     }
                     else
                     {
+                        // Other MyKlass activity types are not tasks to track.
                         continue;
                     }
 
@@ -77,10 +76,12 @@ namespace UniTrack_UMY.Infrastructure.Services
                         CourseId = courseId,
                         Title = title,
                         Type = type,
+                        Source = TaskItem.TaskSource.MyKlass,
                         Url = string.Empty,
+                        ModuleWeek = GetModuleWeek(node),
                         DueDateText = "No due date",
                         DueDate = null,
-                        Status = UniTrack_UMY.Core.Models.TaskItem.TaskStatus.Pending
+                        Status = TaskItem.TaskStatus.Pending
                     };
 
                     var linkNode = node.SelectSingleNode(
@@ -119,34 +120,7 @@ namespace UniTrack_UMY.Infrastructure.Services
                         }
                     }
 
-                    bool isCompleted =
-                        node.InnerHtml.IndexOf(
-                            "fa-check",
-                            StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        node.InnerHtml.IndexOf(
-                            "Completed",
-                            StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        node.InnerHtml.IndexOf(
-                            "Submitted",
-                            StringComparison.OrdinalIgnoreCase) >= 0;
-
-                    if (type == TaskType.Quiz)
-                    {
-                        task.Status =
-                            task.DueDate.HasValue &&
-                            task.DueDate.Value < DateTime.Now
-                                ? UniTrack_UMY.Core.Models.TaskItem.TaskStatus.Overdue
-                                : UniTrack_UMY.Core.Models.TaskItem.TaskStatus.Pending;
-                    }
-                    else if (isCompleted)
-                    {
-                        task.Status = UniTrack_UMY.Core.Models.TaskItem.TaskStatus.Completed;
-                    }
-                    else if (task.DueDate.HasValue &&
-                             task.DueDate.Value < DateTime.Now)
-                    {
-                        task.Status = UniTrack_UMY.Core.Models.TaskItem.TaskStatus.Overdue;
-                    }
+                    task.Status = DetermineStatus(node, task);
 
                     tasks.Add(task);
                 }
@@ -159,12 +133,59 @@ namespace UniTrack_UMY.Infrastructure.Services
 
             return tasks
                 .OrderByDescending(t =>
-                    t.Type == TaskType.Assignment &&
-                    t.Status == UniTrack_UMY.Core.Models.TaskItem.TaskStatus.Overdue)
+                    t.Type == TaskItem.TaskType.Assignment &&
+                    t.Status == TaskItem.TaskStatus.Overdue)
                 .ThenBy(t => t.DueDate ?? DateTime.MaxValue)
                 .ToList();
         }
-        private string CleanText(string text)
+
+        private static TaskItem.TaskStatus DetermineStatus(
+            HtmlNode node,
+            TaskItem task)
+        {
+            bool isCompleted =
+                node.InnerHtml.IndexOf(
+                    "fa-check",
+                    StringComparison.OrdinalIgnoreCase) >= 0 ||
+                node.InnerHtml.IndexOf(
+                    "Completed",
+                    StringComparison.OrdinalIgnoreCase) >= 0 ||
+                node.InnerHtml.IndexOf(
+                    "Submitted",
+                    StringComparison.OrdinalIgnoreCase) >= 0;
+
+            if (isCompleted)
+                return TaskItem.TaskStatus.Completed;
+
+            if (task.DueDate.HasValue &&
+                task.DueDate.Value < DateTime.Now)
+            {
+                return TaskItem.TaskStatus.Overdue;
+            }
+
+            return TaskItem.TaskStatus.Pending;
+        }
+
+        private static string GetModuleWeek(HtmlNode node)
+        {
+            HtmlNode? section = node.SelectSingleNode(
+                "ancestor::li[contains(@class, 'section')]");
+
+            if (section == null)
+                return string.Empty;
+
+            HtmlNode? titleNode =
+                section.SelectSingleNode(
+                    ".//h3[contains(@class, 'sectionname')]") ??
+                section.SelectSingleNode(
+                    ".//*[contains(@class, 'sectionname')]");
+
+            return titleNode == null
+                ? string.Empty
+                : CleanText(titleNode.InnerText);
+        }
+
+        private static string CleanText(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return string.Empty;

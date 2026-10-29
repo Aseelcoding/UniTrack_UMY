@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +8,6 @@ namespace UniTrack_UMY.Core.Models
     {
         public AppLanguage Language { get; set; } = AppLanguage.English;
 
-        public AppTheme Theme { get; set; } = AppTheme.Light;
+        public AppTheme Theme { get; set; } = AppTheme.Dark;
     }
 }
