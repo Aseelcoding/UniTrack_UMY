@@ -94,8 +94,9 @@ namespace UniTrack_UMY.WinForms.Forms
                 {
                     Close();
                 };
-                mainForm.TopMost = true;
+
                 mainForm.Show();
+                mainForm.BringToFront();
             }
             catch (Exception ex)
             {

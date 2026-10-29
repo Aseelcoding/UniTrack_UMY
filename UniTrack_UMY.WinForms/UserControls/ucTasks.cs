@@ -119,20 +119,30 @@ namespace UniTrack_UMY.WinForms.UserControls
 
                     lvTasks.Items.Add(row);
                 }
-
                 if (taskList.Count == 0)
                 {
                     AddMessageRow(
-                        _isIndonesian
-                            ? "Tidak ada tugas yang ditemukan."
-                            : "No tasks were found.");
+                        errors.Count > 0
+                            ? (_isIndonesian
+                                ? "Gagal memuat sebagian data tugas. Periksa pesan peringatan."
+                                : "Some task data could not be loaded. Check the warning.")
+                            : (_isIndonesian
+                                ? "Tidak ada tugas yang ditemukan."
+                                : "No tasks were found."));
                 }
 
                 if (errors.Count > 0)
                 {
+                    string errorDetails = string.Join(
+                        Environment.NewLine,
+                        errors);
+
                     lblTasksDescription.Text = _isIndonesian
                         ? $"Peringatan: {errors.Count} mata kuliah gagal dimuat."
                         : $"Warning: {errors.Count} course(s) failed to load.";
+
+                    lblTasksDescription.Text +=
+                        Environment.NewLine + errorDetails;
                 }
             }
             finally

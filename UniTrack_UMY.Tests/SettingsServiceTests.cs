@@ -9,36 +9,91 @@ namespace UniTrack_UMY.Tests
 {
     public class SettingsServiceTests
     {
+
         [Fact]
-        public void Load_WhenFileDoesNotExist_ReturnsDefaultSettings()
+        public void Load_WhenFileIsEmpty_ReturnsDefaultSettingsAndCreatesBackup()
         {
-            string settingsPath = Path.Combine(
-                Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData),
-                "UniTrack",
-                "settings.json");
+            string directory = Path.Combine(
+                Path.GetTempPath(), Guid.NewGuid().ToString());
 
-            string? originalContent = null;
-            bool fileExisted = File.Exists(settingsPath);
-
-            if (fileExisted)
-                originalContent = File.ReadAllText(settingsPath);
+            Directory.CreateDirectory(directory);
+            string settingsPath = Path.Combine(directory, "settings.json");
 
             try
             {
-                if (File.Exists(settingsPath))
-                    File.Delete(settingsPath);
+                File.WriteAllText(settingsPath, string.Empty);
 
-                var service = new SettingsService();
+                var service = new SettingsService(settingsPath);
+                var settings = service.Load();
+
+                Assert.NotNull(settings);
+                Assert.False(File.Exists(settingsPath));
+
+                string[] backups = Directory.GetFiles(
+                    directory, "settings.json.bad-*");
+
+                Assert.Single(backups);
+                Assert.Equal(string.Empty, File.ReadAllText(backups[0]));
+            }
+            finally
+            {
+                Directory.Delete(directory, true);
+            }
+        }
+
+
+        [Fact]
+        public void Load_WhenJsonIsInvalid_ReturnsDefaultSettingsAndCreatesBackup()
+        {
+            string directory = Path.Combine(
+                Path.GetTempPath(), Guid.NewGuid().ToString());
+
+            Directory.CreateDirectory(directory);
+            string settingsPath = Path.Combine(directory, "settings.json");
+
+            try
+            {
+                File.WriteAllText(settingsPath, "{ invalid json");
+
+                var service = new SettingsService(settingsPath);
+                var settings = service.Load();
+
+                Assert.NotNull(settings);
+                Assert.False(File.Exists(settingsPath));
+
+                string[] backups = Directory.GetFiles(
+                    directory, "settings.json.bad-*");
+
+                Assert.Single(backups);
+                Assert.Equal("{ invalid json", File.ReadAllText(backups[0]));
+            }
+            finally
+            {
+                Directory.Delete(directory, true);
+            }
+        }
+
+        [Fact]
+        public void Load_WhenFileDoesNotExist_ReturnsDefaultSettings()
+        {
+            string directory = Path.Combine(
+                Path.GetTempPath(), Guid.NewGuid().ToString());
+
+            Directory.CreateDirectory(directory);
+
+            try
+            {
+                string settingsPath = Path.Combine(directory, "settings.json");
+                var service = new SettingsService(settingsPath);
 
                 var settings = service.Load();
 
                 Assert.NotNull(settings);
+                Assert.False(File.Exists(settingsPath));
             }
             finally
             {
-                if (fileExisted)
-                    File.WriteAllText(settingsPath, originalContent!);
+                Directory.Delete(directory, true);
             }
         }
 
@@ -69,41 +124,6 @@ namespace UniTrack_UMY.Tests
             }
         }
 
-        [Fact]
-        public void Load_WhenFileIsEmpty_ThrowsJsonException()
-        {
-            string settingsPath = Path.Combine(
-                Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData),
-                "UniTrack",
-                "settings.json");
-
-            string? originalContent = null;
-            bool fileExisted = File.Exists(settingsPath);
-
-            if (fileExisted)
-                originalContent = File.ReadAllText(settingsPath);
-
-            try
-            {
-                Directory.CreateDirectory(
-                    Path.GetDirectoryName(settingsPath)!);
-
-                File.WriteAllText(settingsPath, string.Empty);
-
-                var service = new SettingsService();
-
-                Assert.Throws<System.Text.Json.JsonException>(
-                    () => service.Load());
-            }
-            finally
-            {
-                if (fileExisted)
-                    File.WriteAllText(settingsPath, originalContent!);
-                else if (File.Exists(settingsPath))
-                    File.Delete(settingsPath);
-            }
-        }
 
         [Fact]
       public void Save_ThenLoad_PreservesIndonesianAndLightTheme()
