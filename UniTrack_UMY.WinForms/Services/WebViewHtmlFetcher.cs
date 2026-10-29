@@ -85,6 +85,7 @@ namespace UniTrack_UMY.WinForms.Services
 
                     if (completedTask != completion.Task)
                     {
+                        _webView.CoreWebView2.Stop();
                         throw new TimeoutException(
                             "WebView2 navigation timed out.");
                     }
