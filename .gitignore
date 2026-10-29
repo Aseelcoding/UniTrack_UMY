@@ -361,3 +361,12 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# Test output
+TestResults/
+
+# Local dashboard backup
+.dashboard-backup*/
+
+# Backup and original files
+*.bak
+*.orig
