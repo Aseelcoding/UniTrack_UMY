@@ -14,9 +14,7 @@ namespace UniTrack_UMY.WinForms.UserControls
         private bool _isIndonesian;
 
         // This card uses the existing empty space in the Dashboard.
-        private readonly Panel pnlOverdueCard = new Panel();
-        private readonly Label lblOverdueTitle = new Label();
-        private readonly Label lblOverdueCount = new Label();
+        
 
         public ucDashboard()
             : this(
@@ -39,7 +37,7 @@ namespace UniTrack_UMY.WinForms.UserControls
 
             _settingsService = new SettingsService();
 
-            CreateOverdueCard();
+           
             ApplyLanguage();
 
             PopulateDashboard(
@@ -50,37 +48,7 @@ namespace UniTrack_UMY.WinForms.UserControls
                 hasLoaded);
         }
 
-        private void CreateOverdueCard()
-        {
-            pnlOverdueCard.Name = "pnlOverdueCard";
-            pnlOverdueCard.Location = new System.Drawing.Point(286, 253);
-            pnlOverdueCard.Size = new System.Drawing.Size(200, 120);
-            pnlOverdueCard.BackColor = System.Drawing.Color.White;
-            pnlOverdueCard.BorderStyle = BorderStyle.FixedSingle;
-
-            lblOverdueTitle.Name = "lblOverdueTitle";
-            lblOverdueTitle.Location = new System.Drawing.Point(3, 10);
-            lblOverdueTitle.Size = new System.Drawing.Size(180, 25);
-            lblOverdueTitle.ForeColor =
-                System.Drawing.Color.FromArgb(110, 120, 135);
-
-            lblOverdueCount.Name = "lblOverdueCount";
-            lblOverdueCount.Location = new System.Drawing.Point(3, 40);
-            lblOverdueCount.Size = new System.Drawing.Size(170, 40);
-            lblOverdueCount.Font =
-                new System.Drawing.Font(
-                    "Segoe UI",
-                    19.8F,
-                    System.Drawing.FontStyle.Bold);
-            lblOverdueCount.ForeColor =
-                System.Drawing.Color.FromArgb(32, 43, 60);
-            lblOverdueCount.TextAlign =
-                System.Drawing.ContentAlignment.MiddleLeft;
-
-            pnlOverdueCard.Controls.Add(lblOverdueTitle);
-            pnlOverdueCard.Controls.Add(lblOverdueCount);
-            Controls.Add(pnlOverdueCard);
-        }
+        
 
         private void PopulateDashboard(
             IEnumerable<Course> courses,

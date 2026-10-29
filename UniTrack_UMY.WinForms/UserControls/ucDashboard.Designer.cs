@@ -45,11 +45,15 @@
             lblCoursesTitle = new Label();
             lblDashboardTitle = new Label();
             lblWelcome = new Label();
+            pnlOverdueCard = new Panel();
+            lblOverdueCount = new Label();
+            lblOverdueTitle = new Label();
             pnlUpcomingTasks.SuspendLayout();
             pnlProgressCard.SuspendLayout();
             pnlUpcomingCard.SuspendLayout();
             pnlTasksCard.SuspendLayout();
             pnlCoursesCard.SuspendLayout();
+            pnlOverdueCard.SuspendLayout();
             SuspendLayout();
             // 
             // pnlUpcomingTasks
@@ -59,9 +63,9 @@
             pnlUpcomingTasks.BorderStyle = BorderStyle.FixedSingle;
             pnlUpcomingTasks.Controls.Add(lstUpcomingTasks);
             pnlUpcomingTasks.Controls.Add(lblUpcomingTasks);
-            pnlUpcomingTasks.Location = new Point(13, 316);
+            pnlUpcomingTasks.Location = new Point(3, 285);
             pnlUpcomingTasks.Name = "pnlUpcomingTasks";
-            pnlUpcomingTasks.Size = new Size(1084, 431);
+            pnlUpcomingTasks.Size = new Size(1084, 465);
             pnlUpcomingTasks.TabIndex = 11;
             // 
             // lstUpcomingTasks
@@ -73,7 +77,7 @@
             lstUpcomingTasks.IntegralHeight = false;
             lstUpcomingTasks.Location = new Point(-1, 52);
             lstUpcomingTasks.Name = "lstUpcomingTasks";
-            lstUpcomingTasks.Size = new Size(1081, 378);
+            lstUpcomingTasks.Size = new Size(1081, 412);
             lstUpcomingTasks.TabIndex = 9;
             // 
             // lblUpcomingTasks
@@ -93,7 +97,7 @@
             pnlProgressCard.BorderStyle = BorderStyle.FixedSingle;
             pnlProgressCard.Controls.Add(lblStudyProgress);
             pnlProgressCard.Controls.Add(lblProgressTitle);
-            pnlProgressCard.Location = new Point(832, 115);
+            pnlProgressCard.Location = new Point(632, 115);
             pnlProgressCard.Name = "pnlProgressCard";
             pnlProgressCard.Size = new Size(200, 120);
             pnlProgressCard.TabIndex = 10;
@@ -124,7 +128,7 @@
             pnlUpcomingCard.BorderStyle = BorderStyle.FixedSingle;
             pnlUpcomingCard.Controls.Add(lblUpcomingCount);
             pnlUpcomingCard.Controls.Add(lblUpcomingTitle);
-            pnlUpcomingCard.Location = new Point(571, 115);
+            pnlUpcomingCard.Location = new Point(426, 115);
             pnlUpcomingCard.Name = "pnlUpcomingCard";
             pnlUpcomingCard.Size = new Size(200, 120);
             pnlUpcomingCard.TabIndex = 9;
@@ -155,7 +159,7 @@
             pnlTasksCard.BorderStyle = BorderStyle.FixedSingle;
             pnlTasksCard.Controls.Add(lblTasksCount);
             pnlTasksCard.Controls.Add(lblTasksTitle);
-            pnlTasksCard.Location = new Point(286, 115);
+            pnlTasksCard.Location = new Point(220, 115);
             pnlTasksCard.Name = "pnlTasksCard";
             pnlTasksCard.Size = new Size(200, 120);
             pnlTasksCard.TabIndex = 8;
@@ -230,11 +234,43 @@
             lblWelcome.TabIndex = 13;
             lblWelcome.Text = "Welcome to UniTrack_UMY";
             // 
+            // pnlOverdueCard
+            // 
+            pnlOverdueCard.BackColor = Color.White;
+            pnlOverdueCard.BorderStyle = BorderStyle.FixedSingle;
+            pnlOverdueCard.Controls.Add(lblOverdueCount);
+            pnlOverdueCard.Controls.Add(lblOverdueTitle);
+            pnlOverdueCard.Location = new Point(838, 115);
+            pnlOverdueCard.Name = "pnlOverdueCard";
+            pnlOverdueCard.Size = new Size(200, 120);
+            pnlOverdueCard.TabIndex = 14;
+            // 
+            // lblOverdueCount
+            // 
+            lblOverdueCount.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblOverdueCount.ForeColor = Color.FromArgb(32, 43, 60);
+            lblOverdueCount.Location = new Point(3, 40);
+            lblOverdueCount.Name = "lblOverdueCount";
+            lblOverdueCount.Size = new Size(170, 40);
+            lblOverdueCount.TabIndex = 10;
+            lblOverdueCount.Text = "0";
+            lblOverdueCount.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lblOverdueTitle
+            // 
+            lblOverdueTitle.ForeColor = Color.FromArgb(110, 120, 135);
+            lblOverdueTitle.Location = new Point(3, 10);
+            lblOverdueTitle.Name = "lblOverdueTitle";
+            lblOverdueTitle.Size = new Size(170, 25);
+            lblOverdueTitle.TabIndex = 9;
+            lblOverdueTitle.Text = "\tStudy Progress";
+            // 
             // ucDashboard
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(pnlOverdueCard);
             Controls.Add(pnlUpcomingCard);
             Controls.Add(pnlTasksCard);
             Controls.Add(pnlCoursesCard);
@@ -250,6 +286,7 @@
             pnlUpcomingCard.ResumeLayout(false);
             pnlTasksCard.ResumeLayout(false);
             pnlCoursesCard.ResumeLayout(false);
+            pnlOverdueCard.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -272,5 +309,8 @@
         private Label lblCoursesTitle;
         private Label lblDashboardTitle;
         private Label lblWelcome;
+        private Panel pnlOverdueCard;
+        private Label lblOverdueCount;
+        private Label lblOverdueTitle;
     }
 }
