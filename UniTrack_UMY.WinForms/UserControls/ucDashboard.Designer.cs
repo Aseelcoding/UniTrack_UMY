@@ -59,9 +59,9 @@
             pnlUpcomingTasks.BorderStyle = BorderStyle.FixedSingle;
             pnlUpcomingTasks.Controls.Add(lstUpcomingTasks);
             pnlUpcomingTasks.Controls.Add(lblUpcomingTasks);
-            pnlUpcomingTasks.Location = new Point(13, 374);
+            pnlUpcomingTasks.Location = new Point(13, 316);
             pnlUpcomingTasks.Name = "pnlUpcomingTasks";
-            pnlUpcomingTasks.Size = new Size(466, 217);
+            pnlUpcomingTasks.Size = new Size(1084, 431);
             pnlUpcomingTasks.TabIndex = 11;
             // 
             // lstUpcomingTasks
@@ -73,7 +73,7 @@
             lstUpcomingTasks.IntegralHeight = false;
             lstUpcomingTasks.Location = new Point(-1, 52);
             lstUpcomingTasks.Name = "lstUpcomingTasks";
-            lstUpcomingTasks.Size = new Size(463, 164);
+            lstUpcomingTasks.Size = new Size(1081, 378);
             lstUpcomingTasks.TabIndex = 9;
             // 
             // lblUpcomingTasks
@@ -93,7 +93,7 @@
             pnlProgressCard.BorderStyle = BorderStyle.FixedSingle;
             pnlProgressCard.Controls.Add(lblStudyProgress);
             pnlProgressCard.Controls.Add(lblProgressTitle);
-            pnlProgressCard.Location = new Point(537, 253);
+            pnlProgressCard.Location = new Point(832, 115);
             pnlProgressCard.Name = "pnlProgressCard";
             pnlProgressCard.Size = new Size(200, 120);
             pnlProgressCard.TabIndex = 10;
@@ -124,7 +124,7 @@
             pnlUpcomingCard.BorderStyle = BorderStyle.FixedSingle;
             pnlUpcomingCard.Controls.Add(lblUpcomingCount);
             pnlUpcomingCard.Controls.Add(lblUpcomingTitle);
-            pnlUpcomingCard.Location = new Point(537, 115);
+            pnlUpcomingCard.Location = new Point(571, 115);
             pnlUpcomingCard.Name = "pnlUpcomingCard";
             pnlUpcomingCard.Size = new Size(200, 120);
             pnlUpcomingCard.TabIndex = 9;
@@ -235,16 +235,16 @@
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(pnlUpcomingCard);
+            Controls.Add(pnlTasksCard);
+            Controls.Add(pnlCoursesCard);
             Controls.Add(lblWelcome);
             Controls.Add(lblDashboardTitle);
             Controls.Add(pnlUpcomingTasks);
             Controls.Add(pnlProgressCard);
-            Controls.Add(pnlUpcomingCard);
-            Controls.Add(pnlTasksCard);
-            Controls.Add(pnlCoursesCard);
             Font = new Font("Segoe UI", 10F);
             Name = "ucDashboard";
-            Size = new Size(742, 598);
+            Size = new Size(1100, 750);
             pnlUpcomingTasks.ResumeLayout(false);
             pnlProgressCard.ResumeLayout(false);
             pnlUpcomingCard.ResumeLayout(false);

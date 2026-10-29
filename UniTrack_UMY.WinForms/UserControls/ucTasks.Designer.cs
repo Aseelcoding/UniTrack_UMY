@@ -54,10 +54,10 @@
             lvTasks.Columns.AddRange(new ColumnHeader[] { colTask, colCourse, colDueDate, colStatus });
             lvTasks.FullRowSelect = true;
             lvTasks.GridLines = true;
-            lvTasks.Location = new Point(20, 118);
+            lvTasks.Location = new Point(17, 183);
             lvTasks.MultiSelect = false;
             lvTasks.Name = "lvTasks";
-            lvTasks.Size = new Size(680, 350);
+            lvTasks.Size = new Size(1038, 502);
             lvTasks.TabIndex = 1;
             lvTasks.UseCompatibleStateImageBehavior = false;
             lvTasks.View = View.Details;
@@ -65,27 +65,27 @@
             // colTask
             // 
             colTask.Text = "Task";
-            colTask.Width = 300;
+            colTask.Width = 400;
             // 
             // colCourse
             // 
             colCourse.Text = "Course";
-            colCourse.Width = 220;
+            colCourse.Width = 350;
             // 
             // colDueDate
             // 
             colDueDate.Text = "Due Date";
-            colDueDate.Width = 180;
+            colDueDate.Width = 200;
             // 
             // colStatus
             // 
             colStatus.Text = "Status";
-            colStatus.Width = 150;
+            colStatus.Width = 100;
             // 
             // btnAddTask
             // 
             btnAddTask.Cursor = Cursors.Hand;
-            btnAddTask.Location = new Point(20, 498);
+            btnAddTask.Location = new Point(17, 691);
             btnAddTask.Name = "btnAddTask";
             btnAddTask.Size = new Size(140, 42);
             btnAddTask.TabIndex = 2;
@@ -95,7 +95,7 @@
             // btnDeleteTask
             // 
             btnDeleteTask.Cursor = Cursors.Hand;
-            btnDeleteTask.Location = new Point(175, 498);
+            btnDeleteTask.Location = new Point(172, 691);
             btnDeleteTask.Name = "btnDeleteTask";
             btnDeleteTask.Size = new Size(140, 42);
             btnDeleteTask.TabIndex = 3;
@@ -124,7 +124,7 @@
             Controls.Add(lvTasks);
             Controls.Add(lblTasksTitle);
             Name = "ucTasks";
-            Size = new Size(742, 598);
+            Size = new Size(1100, 750);
             ResumeLayout(false);
             PerformLayout();
         }

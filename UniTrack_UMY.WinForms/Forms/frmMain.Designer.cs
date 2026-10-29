@@ -55,7 +55,7 @@
             pnlSidebar.Dock = DockStyle.Left;
             pnlSidebar.Location = new Point(0, 0);
             pnlSidebar.Name = "pnlSidebar";
-            pnlSidebar.Size = new Size(220, 601);
+            pnlSidebar.Size = new Size(220, 790);
             pnlSidebar.TabIndex = 0;
             // 
             // btnTasks
@@ -172,14 +172,15 @@
             pnlContent.Location = new Point(220, 0);
             pnlContent.Name = "pnlContent";
             pnlContent.Padding = new Padding(20);
-            pnlContent.Size = new Size(742, 601);
+            pnlContent.Size = new Size(1140, 790);
             pnlContent.TabIndex = 1;
             // 
             // pnlPageContent
             // 
-            pnlPageContent.Location = new Point(0, 3);
+            pnlPageContent.Dock = DockStyle.Fill;
+            pnlPageContent.Location = new Point(20, 20);
             pnlPageContent.Name = "pnlPageContent";
-            pnlPageContent.Size = new Size(742, 598);
+            pnlPageContent.Size = new Size(1100, 750);
             pnlPageContent.TabIndex = 2;
             // 
             // frmMain
@@ -187,7 +188,7 @@
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
-            ClientSize = new Size(962, 601);
+            ClientSize = new Size(1360, 790);
             Controls.Add(pnlContent);
             Controls.Add(pnlSidebar);
             Font = new Font("Segoe UI", 10F);

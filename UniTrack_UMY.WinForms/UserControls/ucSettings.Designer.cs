@@ -120,7 +120,7 @@
             Controls.Add(lblTheme);
             Controls.Add(lblSettingsTitle);
             Name = "ucSettings";
-            Size = new Size(742, 598);
+            Size = new Size(1100, 750);
             ResumeLayout(false);
             PerformLayout();
         }

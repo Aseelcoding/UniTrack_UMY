@@ -53,10 +53,10 @@
             lvCourses.Columns.AddRange(new ColumnHeader[] { colCourseName, colProgress, colStatus, colAction });
             lvCourses.FullRowSelect = true;
             lvCourses.GridLines = true;
-            lvCourses.Location = new Point(20, 117);
+            lvCourses.Location = new Point(20, 166);
             lvCourses.MultiSelect = false;
             lvCourses.Name = "lvCourses";
-            lvCourses.Size = new Size(700, 370);
+            lvCourses.Size = new Size(1058, 522);
             lvCourses.TabIndex = 1;
             lvCourses.UseCompatibleStateImageBehavior = false;
             lvCourses.View = View.Details;
@@ -65,17 +65,17 @@
             // colCourseName
             // 
             colCourseName.Text = "Course Name";
-            colCourseName.Width = 250;
+            colCourseName.Width = 350;
             // 
             // colProgress
             // 
             colProgress.Text = "Progress";
-            colProgress.Width = 100;
+            colProgress.Width = 200;
             // 
             // colStatus
             // 
             colStatus.Text = "Status";
-            colStatus.Width = 100;
+            colStatus.Width = 150;
             // 
             // colAction
             // 
@@ -85,7 +85,7 @@
             // btnOpenCourse
             // 
             btnOpenCourse.Cursor = Cursors.Hand;
-            btnOpenCourse.Location = new Point(20, 508);
+            btnOpenCourse.Location = new Point(20, 694);
             btnOpenCourse.Name = "btnOpenCourse";
             btnOpenCourse.Size = new Size(150, 42);
             btnOpenCourse.TabIndex = 2;
@@ -115,7 +115,7 @@
             Controls.Add(lblCoursesTitle);
             Font = new Font("Segoe UI", 10F);
             Name = "ucMyCourses";
-            Size = new Size(742, 598);
+            Size = new Size(1100, 750);
             ResumeLayout(false);
             PerformLayout();
         }

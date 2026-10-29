@@ -40,6 +40,7 @@
             btnSaveNote = new Button();
             lblNotesPlannerDescription = new Label();
             cmbNoteCourse = new ComboBox();
+            label1 = new Label();
             SuspendLayout();
             // 
             // lblNotesPlannerTitle
@@ -57,10 +58,10 @@
             lvNotes.Columns.AddRange(new ColumnHeader[] { colTitle, colCourse, colNoteContent });
             lvNotes.FullRowSelect = true;
             lvNotes.GridLines = true;
-            lvNotes.Location = new Point(20, 116);
+            lvNotes.Location = new Point(15, 138);
             lvNotes.MultiSelect = false;
             lvNotes.Name = "lvNotes";
-            lvNotes.Size = new Size(350, 350);
+            lvNotes.Size = new Size(675, 502);
             lvNotes.TabIndex = 2;
             lvNotes.UseCompatibleStateImageBehavior = false;
             lvNotes.View = View.Details;
@@ -73,36 +74,36 @@
             // colCourse
             // 
             colCourse.Text = "Course";
-            colCourse.Width = 130;
+            colCourse.Width = 250;
             // 
             // colNoteContent
             // 
             colNoteContent.Text = "Note Content";
-            colNoteContent.Width = 250;
+            colNoteContent.Width = 500;
             // 
             // txtNoteContent
             // 
             txtNoteContent.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtNoteContent.Font = new Font("Segoe UI", 10F);
-            txtNoteContent.Location = new Point(400, 116);
+            txtNoteContent.Location = new Point(696, 138);
             txtNoteContent.Multiline = true;
             txtNoteContent.Name = "txtNoteContent";
             txtNoteContent.ScrollBars = ScrollBars.Vertical;
-            txtNoteContent.Size = new Size(300, 350);
+            txtNoteContent.Size = new Size(392, 502);
             txtNoteContent.TabIndex = 3;
             // 
             // txtNoteTitle
             // 
             txtNoteTitle.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            txtNoteTitle.Location = new Point(400, 481);
+            txtNoteTitle.Location = new Point(696, 105);
             txtNoteTitle.Name = "txtNoteTitle";
-            txtNoteTitle.Size = new Size(300, 27);
+            txtNoteTitle.Size = new Size(392, 27);
             txtNoteTitle.TabIndex = 4;
             // 
             // btnAddNote
             // 
             btnAddNote.Cursor = Cursors.Hand;
-            btnAddNote.Location = new Point(20, 538);
+            btnAddNote.Location = new Point(15, 698);
             btnAddNote.Name = "btnAddNote";
             btnAddNote.Size = new Size(150, 42);
             btnAddNote.TabIndex = 5;
@@ -112,7 +113,7 @@
             // btnDeleteNote
             // 
             btnDeleteNote.Cursor = Cursors.Hand;
-            btnDeleteNote.Location = new Point(185, 538);
+            btnDeleteNote.Location = new Point(182, 698);
             btnDeleteNote.Name = "btnDeleteNote";
             btnDeleteNote.Size = new Size(150, 42);
             btnDeleteNote.TabIndex = 6;
@@ -122,7 +123,7 @@
             // btnSaveNote
             // 
             btnSaveNote.Cursor = Cursors.Hand;
-            btnSaveNote.Location = new Point(820, 455);
+            btnSaveNote.Location = new Point(903, 698);
             btnSaveNote.Name = "btnSaveNote";
             btnSaveNote.Size = new Size(150, 42);
             btnSaveNote.TabIndex = 7;
@@ -144,16 +145,26 @@
             // 
             cmbNoteCourse.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbNoteCourse.FormattingEnabled = true;
-            cmbNoteCourse.Location = new Point(20, 481);
+            cmbNoteCourse.Location = new Point(20, 664);
             cmbNoteCourse.Name = "cmbNoteCourse";
             cmbNoteCourse.Size = new Size(350, 28);
             cmbNoteCourse.TabIndex = 9;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(20, 641);
+            label1.Name = "label1";
+            label1.Size = new Size(107, 20);
+            label1.TabIndex = 10;
+            label1.Text = "Choose Course";
             // 
             // ucNotesPlanner
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(label1);
             Controls.Add(cmbNoteCourse);
             Controls.Add(lblNotesPlannerDescription);
             Controls.Add(btnSaveNote);
@@ -164,7 +175,7 @@
             Controls.Add(lvNotes);
             Controls.Add(lblNotesPlannerTitle);
             Name = "ucNotesPlanner";
-            Size = new Size(742, 598);
+            Size = new Size(1100, 750);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -183,5 +194,6 @@
         private Label lblNotesPlannerDescription;
         private ComboBox cmbNoteCourse;
         private ColumnHeader colNoteContent;
+        private Label label1;
     }
 }

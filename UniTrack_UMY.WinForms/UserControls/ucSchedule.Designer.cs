@@ -55,10 +55,10 @@
             lvSchedule.Columns.AddRange(new ColumnHeader[] { colDay, colCourse, colStartTime, colEndTime, colLocation });
             lvSchedule.FullRowSelect = true;
             lvSchedule.GridLines = true;
-            lvSchedule.Location = new Point(20, 103);
+            lvSchedule.Location = new Point(20, 181);
             lvSchedule.MultiSelect = false;
             lvSchedule.Name = "lvSchedule";
-            lvSchedule.Size = new Size(680, 350);
+            lvSchedule.Size = new Size(1038, 502);
             lvSchedule.TabIndex = 1;
             lvSchedule.UseCompatibleStateImageBehavior = false;
             lvSchedule.View = View.Details;
@@ -66,32 +66,32 @@
             // colDay
             // 
             colDay.Text = "Day";
-            colDay.Width = 120;
+            colDay.Width = 180;
             // 
             // colCourse
             // 
             colCourse.Text = "Course";
-            colCourse.Width = 250;
+            colCourse.Width = 350;
             // 
             // colStartTime
             // 
             colStartTime.Text = "Start Time";
-            colStartTime.Width = 150;
+            colStartTime.Width = 200;
             // 
             // colEndTime
             // 
             colEndTime.Text = "End Time";
-            colEndTime.Width = 150;
+            colEndTime.Width = 200;
             // 
             // colLocation
             // 
             colLocation.Text = "Location";
-            colLocation.Width = 200;
+            colLocation.Width = 100;
             // 
             // btnAddSchedule
             // 
             btnAddSchedule.Cursor = Cursors.Hand;
-            btnAddSchedule.Location = new Point(20, 483);
+            btnAddSchedule.Location = new Point(20, 689);
             btnAddSchedule.Name = "btnAddSchedule";
             btnAddSchedule.Size = new Size(150, 42);
             btnAddSchedule.TabIndex = 2;
@@ -101,7 +101,7 @@
             // btnDeleteSchedule
             // 
             btnDeleteSchedule.Cursor = Cursors.Hand;
-            btnDeleteSchedule.Location = new Point(202, 483);
+            btnDeleteSchedule.Location = new Point(202, 689);
             btnDeleteSchedule.Name = "btnDeleteSchedule";
             btnDeleteSchedule.Size = new Size(150, 42);
             btnDeleteSchedule.TabIndex = 3;
@@ -130,7 +130,7 @@
             Controls.Add(lvSchedule);
             Controls.Add(lblScheduleTitle);
             Name = "ucSchedule";
-            Size = new Size(742, 598);
+            Size = new Size(1100, 750);
             ResumeLayout(false);
             PerformLayout();
         }
