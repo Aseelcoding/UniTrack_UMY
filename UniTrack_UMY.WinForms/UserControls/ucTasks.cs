@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using UniTrack_UMY.Core.Models;
 using UniTrack_UMY.Infrastructure.Services;
+using UniTrack_UMY.WinForms.Forms;
 
 namespace UniTrack_UMY.WinForms.UserControls
 {
@@ -12,7 +13,8 @@ namespace UniTrack_UMY.WinForms.UserControls
     {
         private readonly SettingsService _settingsService;
         private bool _isIndonesian;
-
+        private readonly ManualTaskService _manualTaskService;
+        private List<Course> _courses = new List<Course>();
         public ucTasks()
             : this(
                 new List<Course>(),
@@ -33,7 +35,8 @@ namespace UniTrack_UMY.WinForms.UserControls
             InitializeComponent();
 
             _settingsService = new SettingsService();
-
+            _manualTaskService = new ManualTaskService();
+            
             ApplyLanguage();
 
             PopulateTasks(
@@ -52,16 +55,19 @@ namespace UniTrack_UMY.WinForms.UserControls
             bool hasLoaded)
         {
             List<Course> courseList = courses.ToList();
+            _courses = courseList;
             List<TaskItem> taskList = tasks.ToList();
+            taskList.AddRange(_manualTaskService.Load());
             List<string> errors = loadErrors.ToList();
 
             var courseNames = courseList
                 .Where(c => !string.IsNullOrWhiteSpace(c.Id))
                 .GroupBy(c => c.Id)
                 .ToDictionary(g => g.Key, g => g.First().Name);
+          
 
             lvTasks.BeginUpdate();
-
+            
             try
             {
                 lvTasks.Items.Clear();
@@ -90,11 +96,11 @@ namespace UniTrack_UMY.WinForms.UserControls
                     .OrderBy(t => t.DueDate ?? DateTime.MaxValue))
                 {
                     string courseName =
-                        courseNames.TryGetValue(
-                            task.CourseId,
-                            out string? name)
-                            ? name
-                            : string.Empty;
+      courseNames.TryGetValue(
+          task.CourseId,
+          out string? name)
+          ? name
+          : task.CourseName;
 
                     string dueDate;
 
@@ -250,5 +256,10 @@ namespace UniTrack_UMY.WinForms.UserControls
                 : "Delete Task";
         }
 
+        private void btnAddTask_Click(object sender, EventArgs e)
+        {
+            frmAddTask frmAdd = new frmAddTask(_courses);
+            frmAdd.ShowDialog();
+        }
     }
 }

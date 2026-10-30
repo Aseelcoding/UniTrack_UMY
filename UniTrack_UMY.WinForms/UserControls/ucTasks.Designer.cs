@@ -91,6 +91,7 @@
             btnAddTask.TabIndex = 2;
             btnAddTask.Text = "Add Task";
             btnAddTask.UseVisualStyleBackColor = true;
+            btnAddTask.Click += btnAddTask_Click;
             // 
             // btnDeleteTask
             // 

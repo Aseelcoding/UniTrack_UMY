@@ -30,15 +30,20 @@ namespace UniTrack_UMY.Infrastructure.Services
         /// </summary>
         public static void WriteAtomic(string filePath, string json)
         {
-            EnsureDirectory(filePath);
-
+         
             string tempPath = filePath + "." +
                 Guid.NewGuid().ToString("N") + ".tmp";
 
             try
             {
-                File.WriteAllText(tempPath, json);
-
+                
+                
+                
+                    File.WriteAllText(tempPath, json);
+                
+                
+                 
+              
                 if (File.Exists(filePath))
                 {
                     try
