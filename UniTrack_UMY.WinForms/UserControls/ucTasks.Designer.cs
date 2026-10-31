@@ -37,6 +37,7 @@
             btnAddTask = new Button();
             btnDeleteTask = new Button();
             lblTasksDescription = new Label();
+            cmbCourseFilter = new ComboBox();
             SuspendLayout();
             // 
             // lblTasksTitle
@@ -103,6 +104,7 @@
             btnDeleteTask.TabIndex = 3;
             btnDeleteTask.Text = "Delete Task";
             btnDeleteTask.UseVisualStyleBackColor = true;
+            btnDeleteTask.Click += btnDeleteTask_Click;
             // 
             // lblTasksDescription
             // 
@@ -115,11 +117,22 @@
             lblTasksDescription.Text = "Manage assignments and track deadlines";
             lblTasksDescription.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // cmbCourseFilter
+            // 
+            cmbCourseFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCourseFilter.FormattingEnabled = true;
+            cmbCourseFilter.Location = new Point(419, 149);
+            cmbCourseFilter.Name = "cmbCourseFilter";
+            cmbCourseFilter.Size = new Size(351, 28);
+            cmbCourseFilter.TabIndex = 5;
+            cmbCourseFilter.SelectedIndexChanged += cmbCourseFilter_SelectedIndexChanged;
+            // 
             // ucTasks
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(cmbCourseFilter);
             Controls.Add(lblTasksDescription);
             Controls.Add(btnDeleteTask);
             Controls.Add(btnAddTask);
@@ -142,5 +155,6 @@
         private Button btnAddTask;
         private Button btnDeleteTask;
         private Label lblTasksDescription;
+        private ComboBox cmbCourseFilter;
     }
 }

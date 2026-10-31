@@ -14,6 +14,7 @@ namespace UniTrack_UMY.WinForms.UserControls
         private readonly SettingsService _settingsService;
         private bool _isIndonesian;
         private readonly ManualTaskService _manualTaskService;
+        private List<TaskItem> _allTasks = new List<TaskItem>();
         private List<Course> _courses = new List<Course>();
         public ucTasks()
             : this(
@@ -48,112 +49,50 @@ namespace UniTrack_UMY.WinForms.UserControls
         }
 
         private void PopulateTasks(
-            IEnumerable<Course> courses,
-            IEnumerable<TaskItem> tasks,
-            IEnumerable<string> loadErrors,
-            bool isLoading,
-            bool hasLoaded)
+      IEnumerable<Course> courses,
+      IEnumerable<TaskItem> tasks,
+      IEnumerable<string> loadErrors,
+      bool isLoading,
+      bool hasLoaded)
         {
-            List<Course> courseList = courses.ToList();
-            _courses = courseList;
-            List<TaskItem> taskList = tasks.ToList();
-            taskList.AddRange(_manualTaskService.Load());
+            _courses = courses.ToList();
+
+            _allTasks = tasks.ToList();
+            _allTasks.AddRange(_manualTaskService.Load());
+
             List<string> errors = loadErrors.ToList();
 
-            var courseNames = courseList
-                .Where(c => !string.IsNullOrWhiteSpace(c.Id))
-                .GroupBy(c => c.Id)
-                .ToDictionary(g => g.Key, g => g.First().Name);
+            LoadFilters();
 
+            DisplayTasks(ApplyFilters());
 
-            lvTasks.BeginUpdate();
-
-            try
+            if (isLoading)
             {
-                lvTasks.Items.Clear();
-
-                if (isLoading)
-                {
-                    AddMessageRow(
-                        _isIndonesian
-                            ? "Memuat tugas dari MyKlass..."
-                            : "Loading tasks from MyKlass...");
-
-                    return;
-                }
-
-                if (!hasLoaded)
-                {
-                    AddMessageRow(
-                        _isIndonesian
-                            ? "Data tugas belum dimuat."
-                            : "Task data has not been loaded yet.");
-
-                    return;
-                }
-
-                foreach (TaskItem task in taskList
-                    .OrderBy(t => t.DueDate ?? DateTime.MaxValue))
-                {
-                    string courseName =
-      courseNames.TryGetValue(
-          task.CourseId,
-          out string? name)
-          ? name
-          : task.CourseName;
-
-                    string dueDate;
-
-                    if (task.DueDate.HasValue)
-                    {
-                        dueDate = task.DueDate.Value.ToString(
-                            "dd MMM yyyy",
-                            CultureInfo.CurrentCulture);
-                    }
-                    else
-                    {
-                        dueDate = _isIndonesian
-                            ? "Tanpa tenggat"
-                            : "No due date";
-                    }
-
-                    var row = new ListViewItem(task.Title);
-                    row.Tag = task;
-                    row.SubItems.Add(courseName);
-                    row.SubItems.Add(dueDate);
-                    row.SubItems.Add(GetStatusText(task.Status));
-
-                    lvTasks.Items.Add(row);
-                }
-                if (taskList.Count == 0)
-                {
-                    AddMessageRow(
-                        errors.Count > 0
-                            ? (_isIndonesian
-                                ? "Gagal memuat sebagian data tugas. Periksa pesan peringatan."
-                                : "Some task data could not be loaded. Check the warning.")
-                            : (_isIndonesian
-                                ? "Tidak ada tugas yang ditemukan."
-                                : "No tasks were found."));
-                }
-
-                if (errors.Count > 0)
-                {
-                    string errorDetails = string.Join(
-                        Environment.NewLine,
-                        errors);
-
-                    lblTasksDescription.Text = _isIndonesian
-                        ? $"Peringatan: {errors.Count} mata kuliah gagal dimuat."
-                        : $"Warning: {errors.Count} course(s) failed to load.";
-
-                    lblTasksDescription.Text +=
-                        Environment.NewLine + errorDetails;
-                }
+                AddMessageRow(
+                    _isIndonesian
+                        ? "Memuat tugas dari MyKlass..."
+                        : "Loading tasks from MyKlass...");
             }
-            finally
+            else if (!hasLoaded)
             {
-                lvTasks.EndUpdate();
+                AddMessageRow(
+                    _isIndonesian
+                        ? "Data tugas belum dimuat."
+                        : "Task data has not been loaded yet.");
+            }
+
+            if (errors.Count > 0)
+            {
+                string errorDetails = string.Join(
+                    Environment.NewLine,
+                    errors);
+
+                lblTasksDescription.Text = _isIndonesian
+                    ? $"Peringatan: {errors.Count} mata kuliah gagal dimuat."
+                    : $"Warning: {errors.Count} course(s) failed to load.";
+
+                lblTasksDescription.Text +=
+                    Environment.NewLine + errorDetails;
             }
         }
 
@@ -259,7 +198,25 @@ namespace UniTrack_UMY.WinForms.UserControls
         private void btnAddTask_Click(object sender, EventArgs e)
         {
             frmAddTask frmAdd = new frmAddTask(_courses);
-            frmAdd.ShowDialog();
+
+            if (frmAdd.ShowDialog(this) != DialogResult.OK ||
+                frmAdd.CreatedTask == null)
+                return;
+
+            TaskItem task = _manualTaskService.Add(frmAdd.CreatedTask);
+
+            var row = new ListViewItem(task.Title);
+            row.Tag = task;
+
+            row.SubItems.Add(task.CourseName);
+            row.SubItems.Add(
+                task.DueDate.HasValue
+                    ? task.DueDate.Value.ToString("dd MMM yyyy")
+                    : (_isIndonesian ? "Tanpa tenggat" : "No due date"));
+
+            row.SubItems.Add(GetStatusText(task.Status));
+
+            lvTasks.Items.Add(row);
         }
 
         private void lvTasks_DoubleClick(object sender, EventArgs e)
@@ -285,6 +242,135 @@ namespace UniTrack_UMY.WinForms.UserControls
                 {
                     UseShellExecute = true
                 });
+        }
+
+        private void btnDeleteTask_Click(object sender, EventArgs e)
+        {
+            if (lvTasks.SelectedItems.Count == 0)
+                return;
+
+            TaskItem task =
+                lvTasks.SelectedItems[0].Tag as TaskItem;
+
+            if (task == null)
+                return;
+
+            if (task.Source != TaskItem.TaskSource.Manual)
+            {
+                MessageBox.Show(
+                    _isIndonesian
+                        ? "Hanya tugas manual yang dapat dihapus."
+                        : "Only manually added tasks can be deleted.",
+                    "UniTrack",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                _isIndonesian
+                    ? "Apakah Anda yakin ingin menghapus tugas ini?"
+                    : "Are you sure you want to delete this task?",
+                "UniTrack",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            if (_manualTaskService.Delete(task.Id))
+            {
+                lvTasks.Items.Remove(lvTasks.SelectedItems[0]);
+            }
+        }
+        private void LoadFilters()
+        {
+            var courseOptions = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>(
+            "",
+            _isIndonesian ? "Semua Mata Kuliah" : "All Courses")
+    };
+
+            foreach (Course course in _courses
+                .Where(c => !string.IsNullOrWhiteSpace(c.Id))
+                .GroupBy(c => c.Id)
+                .Select(g => g.First()))
+            {
+                courseOptions.Add(
+                    new KeyValuePair<string, string>(
+                        course.Id,
+                        course.Name));
+            }
+
+            cmbCourseFilter.DisplayMember = "Value";
+            cmbCourseFilter.ValueMember = "Key";
+            cmbCourseFilter.DataSource = courseOptions;
+            cmbCourseFilter.SelectedIndex = 0;
+        }
+        private List<TaskItem> ApplyFilters()
+        {
+            IEnumerable<TaskItem> filteredTasks = _allTasks;
+
+            // Course filter
+            if (cmbCourseFilter.SelectedValue is string courseId &&
+                !string.IsNullOrWhiteSpace(courseId))
+            {
+                filteredTasks = filteredTasks.Where(
+                    task => task.CourseId == courseId);
+            }
+
+            return filteredTasks
+                .OrderBy(task => task.DueDate ?? DateTime.MaxValue)
+                .ToList();
+        }
+        private void DisplayTasks(List<TaskItem> taskList)
+        {
+            lvTasks.BeginUpdate();
+
+            try
+            {
+                lvTasks.Items.Clear();
+
+                foreach (TaskItem task in taskList)
+                {
+                    string courseName = _courses
+                        .FirstOrDefault(c => c.Id == task.CourseId)?.Name
+                        ?? task.CourseName;
+
+                    string dueDate = task.DueDate.HasValue
+                        ? task.DueDate.Value.ToString(
+                            "dd MMM yyyy",
+                            CultureInfo.CurrentCulture)
+                        : (_isIndonesian ? "Tanpa tenggat" : "No due date");
+
+                    var row = new ListViewItem(task.Title);
+                    row.Tag = task;
+                    row.SubItems.Add(courseName);
+                    row.SubItems.Add(dueDate);
+                    row.SubItems.Add(GetStatusText(task.Status));
+
+                    lvTasks.Items.Add(row);
+                }
+
+                if (taskList.Count == 0)
+                {
+                    AddMessageRow(
+                        _isIndonesian
+                            ? "Tidak ada tugas yang ditemukan."
+                            : "No tasks were found.");
+                }
+            }
+            finally
+            {
+                lvTasks.EndUpdate();
+            }
+        }
+
+        private void cmbCourseFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DisplayTasks(ApplyFilters());
         }
     }
 }
