@@ -1,70 +1,121 @@
 ﻿
+using System;
 using System.Windows.Forms;
 using UniTrack_UMY.Core.Models;
 using UniTrack_UMY.Infrastructure.Services;
-
+using UniTrack_UMY.WinForms.Forms;
+using UniTrack_UMY.WinForms.Services;
+using System.Collections.Generic;
 namespace UniTrack_UMY.WinForms.UserControls
 {
     public partial class ucSchedule : UserControl
     {
         private readonly SettingsService _settingsService;
+        private readonly ScheduleService _scheduleService;
+        private readonly List<Course> _courses;
+        private ucScheduleClass _selectedClass;
+        public ucSchedule() : this(new List<Course>())
+        {
+        }
 
-        public ucSchedule()
+        public ucSchedule(List<Course> courses)
         {
             InitializeComponent();
 
+            _courses = courses ?? new List<Course>();
+
             _settingsService = new SettingsService();
-            ApplyLanguage();
+            _scheduleService = new ScheduleService();
+
+            InitializeDays();
+            LoadSchedule();
+
+            ucSunday.ClassSelected += OnClassSelected;
+            ucMonday.ClassSelected += OnClassSelected;
+            ucTuesday.ClassSelected += OnClassSelected;
+            ucWednesday.ClassSelected += OnClassSelected;
+            ucThursday.ClassSelected += OnClassSelected;
+            ucFriday.ClassSelected += OnClassSelected;
+            ucSaturday.ClassSelected += OnClassSelected;
+        }
+        private void OnClassSelected(ucScheduleClass selected)
+        {
+            if (_selectedClass != null)
+                _selectedClass.SetSelected(false);
+
+            _selectedClass = selected;
+            _selectedClass.SetSelected(true);
+        }
+        private void InitializeDays()
+        {
+            ucSunday.DayName = "Sunday";
+            ucMonday.DayName = "Monday";
+            ucTuesday.DayName = "Tuesday";
+            ucWednesday.DayName = "Wednesday";
+            ucThursday.DayName = "Thursday";
+            ucFriday.DayName = "Friday";
+            ucSaturday.DayName = "Saturday";
+        }
+        private void LoadSchedule()
+        {
+            _selectedClass = null;
+            var schedule = _scheduleService.Load();
+
+            ucSunday.LoadClasses(schedule);
+            ucMonday.LoadClasses(schedule);
+            ucTuesday.LoadClasses(schedule);
+            ucWednesday.LoadClasses(schedule);
+            ucThursday.LoadClasses(schedule);
+            ucFriday.LoadClasses(schedule);
+            ucSaturday.LoadClasses(schedule);
         }
 
-        private void ApplyLanguage()
+        private void btnAddSchedule_Click(object sender, EventArgs e)
         {
-            AppSettings settings = _settingsService.Load();
-            bool isIndonesian =
-                settings.Language == AppLanguage.Indonesian;
+            using (frmAddSchedule form = new frmAddSchedule(_courses))
+            {
+               
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    ScheduleItem newSchedule = form.Schedule;
 
-            lblScheduleTitle.Text = isIndonesian
-                ? "Jadwal Saya"
-                : "My Schedule";
-            lblScheduleDescription.Text = isIndonesian
-    ? "Lihat jadwal kuliah Anda"
-    : "View your class schedule";
-            colDay.Text = isIndonesian
-                ? "Hari"
-                : "Day";
+                    var schedule = _scheduleService.Load();
 
-            colCourse.Text = isIndonesian
-                ? "Mata Kuliah"
-                : "Course";
+                    schedule.Add(newSchedule);
 
-          
+                    _scheduleService.Save(schedule);
 
-            colStartTime.Text = isIndonesian
-                ? "Waktu Mulai"
-                : "Start Time";
+                    LoadSchedule();
+                }
+            }
 
-            colEndTime.Text = isIndonesian
-                ? "Waktu Selesai"
-                : "End Time";
-
-            colLocation.Text = isIndonesian
-                ? "Lokasi"
-                : "Location";
-
-            btnAddSchedule.Text = isIndonesian
-                ? "Tambah Jadwal"
-                : "Add Schedule";
-
-            btnDeleteSchedule.Text = isIndonesian
-                ? "Hapus Jadwal"
-                : "Delete Schedule";
         }
-
-        private void lvSchedule_SizeChanged(object? sender, EventArgs e)
+        private void btnDeleteSchedule_Click(object sender, EventArgs e)
         {
-            int fixedWidth = colDay.Width + colStartTime.Width
-                           + colEndTime.Width + colLocation.Width;
-            colCourse.Width = Math.Max(200, lvSchedule.ClientSize.Width - fixedWidth);
+            if (_selectedClass == null)
+            {
+                MessageBox.Show("Please select a class first.");
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to delete this class?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            var schedule = _scheduleService.Load();
+
+            schedule.RemoveAll(item => item.Id == _selectedClass.Schedule.Id);
+
+            _scheduleService.Save(schedule);
+
+            _selectedClass = null;
+
+            LoadSchedule();
         }
     }
 }

@@ -26,7 +26,12 @@ namespace UniTrack_UMY.WinForms.Forms
 
         private bool _isLoadingTasks;
         private bool _hasLoadedTasks;
-
+        private ucDashboard? _dashboardPage;
+        private ucTasks? _tasksPage;
+        private ucMyCourses? _myCoursesPage;
+        private ucSchedule? _schedulePage;
+        private ucNotesPlanner? _notesPlannerPage;
+        private ucSettings? _settingsPage;
         public frmMain() : this(new List<Course>(), null)
         {
         }
@@ -154,12 +159,19 @@ namespace UniTrack_UMY.WinForms.Forms
 
         private void ShowPage(UserControl page)
         {
-            page.Dock = DockStyle.Fill;
+            if (!pnlPageContent.Controls.Contains(page))
+            {
+                page.Dock = DockStyle.Fill;
+                _themeManager.ApplyTheme(page);
+                pnlPageContent.Controls.Add(page);
+            }
 
-            _themeManager.ApplyTheme(page);
+            foreach (Control control in pnlPageContent.Controls)
+            {
+                control.Visible = control == page;
+            }
 
-            pnlPageContent.Controls.Clear();
-            pnlPageContent.Controls.Add(page);
+            page.BringToFront();
         }
 
         private void ApplyLanguage()
@@ -213,7 +225,7 @@ namespace UniTrack_UMY.WinForms.Forms
             else if (currentPage is ucMyCourses)
                 ShowPage(new ucMyCourses(_courses));
             else if (currentPage is ucSchedule)
-                ShowPage(new ucSchedule());
+                ShowPage(new ucSchedule(_courses));
             else if (currentPage is ucNotesPlanner)
                 ShowPage(new ucNotesPlanner(_courses));
             else if (currentPage is ucSettings)
@@ -262,10 +274,12 @@ namespace UniTrack_UMY.WinForms.Forms
         {
             ShowPage(CreateTasks());
         }
-
         private void btnSchedule_Click(object sender, EventArgs e)
         {
-            ShowPage(new ucSchedule());
+            if (_schedulePage == null || _schedulePage.IsDisposed)
+                _schedulePage = new ucSchedule(_courses);
+
+            ShowPage(_schedulePage);
         }
 
         private void btnNotesPlanner_Click(object sender, EventArgs e)

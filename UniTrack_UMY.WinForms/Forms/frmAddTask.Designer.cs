@@ -119,6 +119,7 @@
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(125, 40);
             btnSave.TabIndex = 5;
+            btnSave.Tag = "primary";
             btnSave.Text = "Save Task";
             btnSave.UseVisualStyleBackColor = false;
             btnSave.Click += btnSave_Click;
@@ -132,6 +133,7 @@
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(125, 40);
             btnCancel.TabIndex = 6;
+            btnCancel.Tag = "danger";
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = false;
             btnCancel.Click += btnCancel_Click;
