@@ -61,6 +61,7 @@
             lvTasks.TabIndex = 1;
             lvTasks.UseCompatibleStateImageBehavior = false;
             lvTasks.View = View.Details;
+            lvTasks.DoubleClick += lvTasks_DoubleClick;
             // 
             // colTask
             // 
@@ -75,7 +76,7 @@
             // colDueDate
             // 
             colDueDate.Text = "Due Date";
-            colDueDate.Width = 200;
+            colDueDate.Width = 150;
             // 
             // colStatus
             // 

@@ -94,9 +94,9 @@ namespace UniTrack_UMY.WinForms.Forms
                 {
                     Close();
                 };
-
-                mainForm.Show();
                 mainForm.BringToFront();
+                mainForm.Show();
+                
             }
             catch (Exception ex)
             {

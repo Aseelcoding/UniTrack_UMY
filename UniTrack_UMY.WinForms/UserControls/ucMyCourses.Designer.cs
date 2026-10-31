@@ -65,7 +65,7 @@
             // colCourseName
             // 
             colCourseName.Text = "Course Name";
-            colCourseName.Width = 350;
+            colCourseName.Width = 430;
             // 
             // colProgress
             // 

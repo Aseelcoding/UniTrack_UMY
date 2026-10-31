@@ -79,6 +79,7 @@
             lstUpcomingTasks.Name = "lstUpcomingTasks";
             lstUpcomingTasks.Size = new Size(1081, 412);
             lstUpcomingTasks.TabIndex = 9;
+            lstUpcomingTasks.DoubleClick += lstUpcomingTasks_DoubleClick;
             // 
             // lblUpcomingTasks
             // 

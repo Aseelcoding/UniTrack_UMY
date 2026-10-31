@@ -14,7 +14,7 @@ namespace UniTrack_UMY.WinForms.UserControls
         private bool _isIndonesian;
 
         // This card uses the existing empty space in the Dashboard.
-        
+
 
         public ucDashboard()
             : this(
@@ -37,7 +37,7 @@ namespace UniTrack_UMY.WinForms.UserControls
 
             _settingsService = new SettingsService();
 
-           
+
             ApplyLanguage();
 
             PopulateDashboard(
@@ -48,7 +48,7 @@ namespace UniTrack_UMY.WinForms.UserControls
                 hasLoaded);
         }
 
-        
+
 
         private void PopulateDashboard(
             IEnumerable<Course> courses,
@@ -175,7 +175,8 @@ namespace UniTrack_UMY.WinForms.UserControls
                         ? $"{dueDate} | {task.Title}"
                         : $"{dueDate} | {task.Title} — {courseName}";
 
-                    lstUpcomingTasks.Items.Add(line);
+
+                    lstUpcomingTasks.Items.Add(new DashboardTaskEntry(task, line));
                 }
 
                 if (upcomingTasks.Count == 0)
@@ -203,7 +204,22 @@ namespace UniTrack_UMY.WinForms.UserControls
                 lstUpcomingTasks.EndUpdate();
             }
         }
+        private class DashboardTaskEntry
+        {
+            public TaskItem Task { get; }
+            private string DisplayText { get; }
 
+            public DashboardTaskEntry(TaskItem task, string displayText)
+            {
+                Task = task;
+                DisplayText = displayText;
+            }
+
+            public override string ToString()
+            {
+                return DisplayText;
+            }
+        }
         private void ApplyLanguage()
         {
             AppSettings settings = _settingsService.Load();
@@ -241,6 +257,33 @@ namespace UniTrack_UMY.WinForms.UserControls
             lblOverdueTitle.Text = _isIndonesian
                 ? "Terlambat"
                 : "Overdue";
+        }
+
+        private void lstUpcomingTasks_DoubleClick(object sender, EventArgs e)
+        {
+            DashboardTaskEntry entry =
+       lstUpcomingTasks.SelectedItem as DashboardTaskEntry;
+
+            if (entry == null)
+                return;
+
+            TaskItem task = entry.Task;
+
+            if (task == null || task.Source != TaskItem.TaskSource.MyKlass)
+                return;
+
+            if (!Uri.TryCreate(task.Url, UriKind.Absolute, out Uri uri))
+                return;
+
+            if (uri.Scheme != Uri.UriSchemeHttp &&
+                uri.Scheme != Uri.UriSchemeHttps)
+                return;
+
+            System.Diagnostics.Process.Start(
+                new System.Diagnostics.ProcessStartInfo(task.Url)
+                {
+                    UseShellExecute = true
+                });
         }
     }
 }

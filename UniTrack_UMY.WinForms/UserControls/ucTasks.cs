@@ -36,7 +36,7 @@ namespace UniTrack_UMY.WinForms.UserControls
 
             _settingsService = new SettingsService();
             _manualTaskService = new ManualTaskService();
-            
+
             ApplyLanguage();
 
             PopulateTasks(
@@ -64,10 +64,10 @@ namespace UniTrack_UMY.WinForms.UserControls
                 .Where(c => !string.IsNullOrWhiteSpace(c.Id))
                 .GroupBy(c => c.Id)
                 .ToDictionary(g => g.Key, g => g.First().Name);
-          
+
 
             lvTasks.BeginUpdate();
-            
+
             try
             {
                 lvTasks.Items.Clear();
@@ -118,7 +118,7 @@ namespace UniTrack_UMY.WinForms.UserControls
                     }
 
                     var row = new ListViewItem(task.Title);
-
+                    row.Tag = task;
                     row.SubItems.Add(courseName);
                     row.SubItems.Add(dueDate);
                     row.SubItems.Add(GetStatusText(task.Status));
@@ -260,6 +260,31 @@ namespace UniTrack_UMY.WinForms.UserControls
         {
             frmAddTask frmAdd = new frmAddTask(_courses);
             frmAdd.ShowDialog();
+        }
+
+        private void lvTasks_DoubleClick(object sender, EventArgs e)
+        {
+
+            if (lvTasks.SelectedItems.Count == 0)
+                return;
+
+            TaskItem task = lvTasks.SelectedItems[0].Tag as TaskItem;
+
+            if (task == null || task.Source != TaskItem.TaskSource.MyKlass)
+                return;
+
+            if (!Uri.TryCreate(task.Url, UriKind.Absolute, out Uri uri))
+                return;
+
+            if (uri.Scheme != Uri.UriSchemeHttp &&
+                uri.Scheme != Uri.UriSchemeHttps)
+                return;
+
+            System.Diagnostics.Process.Start(
+                new System.Diagnostics.ProcessStartInfo(task.Url)
+                {
+                    UseShellExecute = true
+                });
         }
     }
 }

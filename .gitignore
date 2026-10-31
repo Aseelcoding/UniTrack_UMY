@@ -370,3 +370,4 @@ TestResults/
 # Backup and original files
 *.bak
 *.orig
+.aider*
