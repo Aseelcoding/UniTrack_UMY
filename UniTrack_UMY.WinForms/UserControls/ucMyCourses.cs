@@ -182,5 +182,12 @@ namespace UniTrack_UMY.WinForms.UserControls
         {
             btnOpenCourse.Enabled = lvCourses.SelectedItems.Count > 0;
         }
+
+        private void lblCoursesTitle_SizeChanged(object? sender, EventArgs e)
+        {
+            int fixedWidth = colProgress.Width + colStatus.Width + colAction.Width;
+            colCourseName.Width = Math.Max(250, lvCourses.ClientSize.Width - fixedWidth);
+
+        }
     }
 }

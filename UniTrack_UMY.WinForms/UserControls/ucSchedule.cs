@@ -59,5 +59,12 @@ namespace UniTrack_UMY.WinForms.UserControls
                 ? "Hapus Jadwal"
                 : "Delete Schedule";
         }
+
+        private void lvSchedule_SizeChanged(object? sender, EventArgs e)
+        {
+            int fixedWidth = colDay.Width + colStartTime.Width
+                           + colEndTime.Width + colLocation.Width;
+            colCourse.Width = Math.Max(200, lvSchedule.ClientSize.Width - fixedWidth);
+        }
     }
 }

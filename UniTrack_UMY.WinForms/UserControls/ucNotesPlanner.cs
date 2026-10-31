@@ -288,5 +288,10 @@ namespace UniTrack_UMY.WinForms.UserControls
 
             lvNotes.SelectedItems.Clear();
         }
+        private void lvNotes_SizeChanged(object? sender, EventArgs e)
+        {
+            int fixedWidth = colTitle.Width + colCourse.Width;
+            colNoteContent.Width = Math.Max(200, lvNotes.ClientSize.Width - fixedWidth);
+        }
     }
 }

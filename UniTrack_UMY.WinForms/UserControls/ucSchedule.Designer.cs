@@ -1,4 +1,6 @@
-﻿namespace UniTrack_UMY.WinForms.UserControls
+﻿using System.Reflection.PortableExecutable;
+
+namespace UniTrack_UMY.WinForms.UserControls
 {
     partial class ucSchedule
     {
@@ -28,115 +30,170 @@
         /// </summary>
         private void InitializeComponent()
         {
+            pnlHeader = new Panel();
             lblScheduleTitle = new Label();
+            lblScheduleDescription = new Label();
+            pnlListCard = new Panel();
             lvSchedule = new ListView();
             colDay = new ColumnHeader();
             colCourse = new ColumnHeader();
             colStartTime = new ColumnHeader();
             colEndTime = new ColumnHeader();
             colLocation = new ColumnHeader();
+            pnlFooter = new Panel();
             btnAddSchedule = new Button();
             btnDeleteSchedule = new Button();
-            lblScheduleDescription = new Label();
+            pnlHeader.SuspendLayout();
+            pnlListCard.SuspendLayout();
+            pnlFooter.SuspendLayout();
             SuspendLayout();
+            // 
+            // pnlHeader
+            // 
+            pnlHeader.Controls.Add(lblScheduleTitle);
+            pnlHeader.Controls.Add(lblScheduleDescription);
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Padding = new Padding(0, 0, 0, 14);
+            pnlHeader.Size = new Size(1100, 100);
+            pnlHeader.TabIndex = 0;
             // 
             // lblScheduleTitle
             // 
-            lblScheduleTitle.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblScheduleTitle.Location = new Point(20, 20);
+            lblScheduleTitle.Dock = DockStyle.Fill;
+            lblScheduleTitle.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
             lblScheduleTitle.Name = "lblScheduleTitle";
-            lblScheduleTitle.Size = new Size(400, 52);
             lblScheduleTitle.TabIndex = 0;
             lblScheduleTitle.Text = "My Schedule";
+            lblScheduleTitle.TextAlign = ContentAlignment.BottomLeft;
+            // 
+            // lblScheduleDescription
+            // 
+            lblScheduleDescription.AutoSize = false;
+            lblScheduleDescription.Dock = DockStyle.Bottom;
+            lblScheduleDescription.ForeColor = Color.FromArgb(110, 120, 135);
+            lblScheduleDescription.Name = "lblScheduleDescription";
+            lblScheduleDescription.Size = new Size(1100, 28);
+            lblScheduleDescription.TabIndex = 1;
+            lblScheduleDescription.Tag = "muted";
+            lblScheduleDescription.Text = "Keep your class schedule organized";
+            lblScheduleDescription.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // pnlListCard
+            // 
+            pnlListCard.BackColor = Color.White;
+            pnlListCard.Controls.Add(lvSchedule);
+            pnlListCard.Controls.Add(pnlFooter);
+            pnlListCard.Dock = DockStyle.Fill;
+            pnlListCard.Name = "pnlListCard";
+            pnlListCard.Padding = new Padding(12);
+            pnlListCard.TabIndex = 1;
             // 
             // lvSchedule
             // 
-            lvSchedule.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lvSchedule.BackColor = Color.White;
+            lvSchedule.BorderStyle = BorderStyle.None;
             lvSchedule.Columns.AddRange(new ColumnHeader[] { colDay, colCourse, colStartTime, colEndTime, colLocation });
+            lvSchedule.Dock = DockStyle.Fill;
+            lvSchedule.Font = new Font("Segoe UI", 10.5F);
             lvSchedule.FullRowSelect = true;
-            lvSchedule.GridLines = true;
-            lvSchedule.Location = new Point(20, 181);
+            lvSchedule.GridLines = false;
+            lvSchedule.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             lvSchedule.MultiSelect = false;
             lvSchedule.Name = "lvSchedule";
-            lvSchedule.Size = new Size(1038, 502);
-            lvSchedule.TabIndex = 1;
+            lvSchedule.TabIndex = 0;
             lvSchedule.UseCompatibleStateImageBehavior = false;
             lvSchedule.View = View.Details;
+            lvSchedule.SizeChanged += lvSchedule_SizeChanged;
             // 
             // colDay
             // 
             colDay.Text = "Day";
-            colDay.Width = 180;
+            colDay.Width = 150;
             // 
             // colCourse
             // 
             colCourse.Text = "Course";
-            colCourse.Width = 350;
+            colCourse.Width = 320;
             // 
             // colStartTime
             // 
             colStartTime.Text = "Start Time";
-            colStartTime.Width = 200;
+            colStartTime.Width = 130;
             // 
             // colEndTime
             // 
             colEndTime.Text = "End Time";
-            colEndTime.Width = 200;
+            colEndTime.Width = 130;
             // 
             // colLocation
             // 
             colLocation.Text = "Location";
-            colLocation.Width = 100;
+            colLocation.Width = 200;
+            // 
+            // pnlFooter
+            // 
+            pnlFooter.Controls.Add(btnAddSchedule);
+            pnlFooter.Controls.Add(btnDeleteSchedule);
+            pnlFooter.Dock = DockStyle.Bottom;
+            pnlFooter.Name = "pnlFooter";
+            pnlFooter.Size = new Size(1000, 62);
+            pnlFooter.TabIndex = 1;
+            pnlFooter.Tag = "card";
             // 
             // btnAddSchedule
             // 
+            btnAddSchedule.BackColor = Color.FromArgb(55, 110, 190);
             btnAddSchedule.Cursor = Cursors.Hand;
-            btnAddSchedule.Location = new Point(20, 689);
+            btnAddSchedule.FlatAppearance.BorderSize = 0;
+            btnAddSchedule.FlatStyle = FlatStyle.Flat;
+            btnAddSchedule.Font = new Font("Segoe UI Semibold", 10.5F);
+            btnAddSchedule.ForeColor = Color.White;
+            btnAddSchedule.Location = new Point(0, 14);
             btnAddSchedule.Name = "btnAddSchedule";
-            btnAddSchedule.Size = new Size(150, 42);
-            btnAddSchedule.TabIndex = 2;
+            btnAddSchedule.Size = new Size(170, 44);
+            btnAddSchedule.TabIndex = 0;
+            btnAddSchedule.Tag = "primary";
             btnAddSchedule.Text = "Add Schedule";
-            btnAddSchedule.UseVisualStyleBackColor = true;
+            btnAddSchedule.UseVisualStyleBackColor = false;
             // 
             // btnDeleteSchedule
             // 
+            btnDeleteSchedule.BackColor = Color.FromArgb(220, 53, 69);
             btnDeleteSchedule.Cursor = Cursors.Hand;
-            btnDeleteSchedule.Location = new Point(202, 689);
+            btnDeleteSchedule.FlatAppearance.BorderSize = 0;
+            btnDeleteSchedule.FlatStyle = FlatStyle.Flat;
+            btnDeleteSchedule.Font = new Font("Segoe UI Semibold", 10.5F);
+            btnDeleteSchedule.ForeColor = Color.White;
+            btnDeleteSchedule.Location = new Point(182, 14);
             btnDeleteSchedule.Name = "btnDeleteSchedule";
-            btnDeleteSchedule.Size = new Size(150, 42);
-            btnDeleteSchedule.TabIndex = 3;
+            btnDeleteSchedule.Size = new Size(170, 44);
+            btnDeleteSchedule.TabIndex = 1;
+            btnDeleteSchedule.Tag = "danger";
             btnDeleteSchedule.Text = "Delete Schedule";
-            btnDeleteSchedule.UseVisualStyleBackColor = true;
-            // 
-            // lblScheduleDescription
-            // 
-            lblScheduleDescription.AutoSize = true;
-            lblScheduleDescription.ForeColor = Color.FromArgb(110, 120, 135);
-            lblScheduleDescription.Location = new Point(38, 72);
-            lblScheduleDescription.Name = "lblScheduleDescription";
-            lblScheduleDescription.Size = new Size(244, 20);
-            lblScheduleDescription.TabIndex = 9;
-            lblScheduleDescription.Text = "Keep your class schedule organized";
-            lblScheduleDescription.TextAlign = ContentAlignment.MiddleLeft;
+            btnDeleteSchedule.UseVisualStyleBackColor = false;
             // 
             // ucSchedule
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
-            Controls.Add(lblScheduleDescription);
-            Controls.Add(btnDeleteSchedule);
-            Controls.Add(btnAddSchedule);
-            Controls.Add(lvSchedule);
-            Controls.Add(lblScheduleTitle);
+            Controls.Add(pnlListCard);   
+            Controls.Add(pnlHeader); 
+            Font = new Font("Segoe UI", 10F);
             Name = "ucSchedule";
             Size = new Size(1100, 750);
+            pnlHeader.ResumeLayout(false);
+            pnlListCard.ResumeLayout(false);
+            pnlFooter.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
+        private Panel pnlHeader;
+        private Panel pnlListCard;
+        private Panel pnlFooter;
         private Label lblScheduleTitle;
         private ListView lvSchedule;
         private ColumnHeader colDay;

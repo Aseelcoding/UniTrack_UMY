@@ -12,7 +12,7 @@ namespace UniTrack_UMY.WinForms
         {
             ApplicationConfiguration.Initialize();
 
-            Application.Run(new frmLogin());
+            Application.Run(new frmMain());
         }
     }
 }

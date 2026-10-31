@@ -1,5 +1,4 @@
-﻿
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace UniTrack_UMY.WinForms.Services
@@ -15,6 +14,20 @@ namespace UniTrack_UMY.WinForms.Services
 
         public void ApplyTheme(Control control)
         {
+            string? tag = control.Tag as string;
+
+           
+            if (tag != "keep")
+                ApplyToControl(control, tag);
+
+            foreach (Control child in control.Controls)
+                ApplyTheme(child);
+        }
+
+        private void ApplyToControl(Control control, string? tag)
+        {
+            bool inSidebar = control.Parent?.Name == "pnlSidebar";
+
             if (control is Form || control is UserControl)
             {
                 control.BackColor = _colors.Background;
@@ -24,6 +37,10 @@ namespace UniTrack_UMY.WinForms.Services
             {
                 if (panel.Name == "pnlSidebar")
                     panel.BackColor = _colors.Sidebar;
+                else if (panel.Name.EndsWith("Accent"))
+                    return; 
+                else if (tag == "card" || panel.Name.EndsWith("Card"))
+                    panel.BackColor = _colors.Surface;
                 else
                     panel.BackColor = _colors.Background;
 
@@ -32,15 +49,55 @@ namespace UniTrack_UMY.WinForms.Services
             else if (control is Label label)
             {
                 label.BackColor = Color.Transparent;
-                label.ForeColor = _colors.Text;
+
+                if (inSidebar)
+                    label.ForeColor = Color.White;
+                else if (tag == "muted")
+                    label.ForeColor = _colors.SecondaryText;
+                else if (tag == "danger")
+                    label.ForeColor = _colors.Danger;
+                else
+                    label.ForeColor = _colors.Text;
             }
             else if (control is Button button)
             {
                 button.FlatStyle = FlatStyle.Flat;
                 button.FlatAppearance.BorderSize = 0;
-                button.BackColor = _colors.Surface;
-                button.ForeColor = _colors.Text;
                 button.UseVisualStyleBackColor = false;
+
+                if (inSidebar)
+                {
+                    button.BackColor = _colors.Sidebar;
+                    button.ForeColor = _colors.SidebarText;
+                    button.FlatAppearance.MouseOverBackColor = _colors.SidebarHover;
+                    button.FlatAppearance.MouseDownBackColor = _colors.SidebarActive;
+                }
+                else if (tag == "primary")
+                {
+                    button.BackColor = _colors.Primary;
+                    button.ForeColor = Color.White;
+                    button.FlatAppearance.MouseOverBackColor = ControlPaint.Light(_colors.Primary, 0.15f);
+                    button.FlatAppearance.MouseDownBackColor = ControlPaint.Dark(_colors.Primary, 0.1f);
+                }
+                else if (tag == "danger")
+                {
+                    button.BackColor = _colors.Danger;
+                    button.ForeColor = Color.White;
+                    button.FlatAppearance.MouseOverBackColor = ControlPaint.Light(_colors.Danger, 0.15f);
+                    button.FlatAppearance.MouseDownBackColor = ControlPaint.Dark(_colors.Danger, 0.1f);
+                }
+                else if (tag == "secondary")
+                {
+                    button.BackColor = _colors.Background;
+                    button.ForeColor = _colors.Text;
+                    button.FlatAppearance.BorderSize = 1;
+                    button.FlatAppearance.BorderColor = _colors.Border;
+                }
+                else
+                {
+                    button.BackColor = _colors.Surface;
+                    button.ForeColor = _colors.Text;
+                }
             }
             else if (control is ListBox listBox)
             {
@@ -63,10 +120,6 @@ namespace UniTrack_UMY.WinForms.Services
                 comboBox.ForeColor = _colors.Text;
             }
 
-            foreach (Control child in control.Controls)
-            {
-                ApplyTheme(child);
-            }
         }
     }
 }

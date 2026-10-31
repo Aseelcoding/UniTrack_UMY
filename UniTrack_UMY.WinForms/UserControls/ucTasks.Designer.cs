@@ -1,4 +1,6 @@
-﻿namespace UniTrack_UMY.WinForms.UserControls
+﻿using System.Reflection.PortableExecutable;
+
+namespace UniTrack_UMY.WinForms.UserControls
 {
     partial class ucTasks
     {
@@ -28,124 +30,200 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            pnlHeader = new Panel();
             lblTasksTitle = new Label();
+            lblTasksDescription = new Label();
+            pnlToolbar = new Panel();
+            cmbCourseFilter = new ComboBox();
+            pnlListCard = new Panel();
             lvTasks = new ListView();
             colTask = new ColumnHeader();
             colCourse = new ColumnHeader();
             colDueDate = new ColumnHeader();
             colStatus = new ColumnHeader();
+            imgRowHeight = new ImageList(components);
+            pnlFooter = new Panel();
             btnAddTask = new Button();
             btnDeleteTask = new Button();
-            lblTasksDescription = new Label();
-            cmbCourseFilter = new ComboBox();
+            pnlHeader.SuspendLayout();
+            pnlToolbar.SuspendLayout();
+            pnlListCard.SuspendLayout();
+            pnlFooter.SuspendLayout();
             SuspendLayout();
+            // 
+            // pnlHeader
+            // 
+            pnlHeader.Controls.Add(lblTasksTitle);
+            pnlHeader.Controls.Add(lblTasksDescription);
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Padding = new Padding(0, 0, 0, 14);
+            pnlHeader.Size = new Size(1100, 100);
+            pnlHeader.TabIndex = 0;
             // 
             // lblTasksTitle
             // 
-            lblTasksTitle.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTasksTitle.Location = new Point(20, 20);
+            lblTasksTitle.Dock = DockStyle.Fill;
+            lblTasksTitle.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
             lblTasksTitle.Name = "lblTasksTitle";
-            lblTasksTitle.Size = new Size(400, 54);
             lblTasksTitle.TabIndex = 0;
             lblTasksTitle.Text = "My Tasks";
-            // 
-            // lvTasks
-            // 
-            lvTasks.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            lvTasks.Columns.AddRange(new ColumnHeader[] { colTask, colCourse, colDueDate, colStatus });
-            lvTasks.FullRowSelect = true;
-            lvTasks.GridLines = true;
-            lvTasks.Location = new Point(17, 183);
-            lvTasks.MultiSelect = false;
-            lvTasks.Name = "lvTasks";
-            lvTasks.Size = new Size(1038, 502);
-            lvTasks.TabIndex = 1;
-            lvTasks.UseCompatibleStateImageBehavior = false;
-            lvTasks.View = View.Details;
-            lvTasks.DoubleClick += lvTasks_DoubleClick;
-            // 
-            // colTask
-            // 
-            colTask.Text = "Task";
-            colTask.Width = 400;
-            // 
-            // colCourse
-            // 
-            colCourse.Text = "Course";
-            colCourse.Width = 350;
-            // 
-            // colDueDate
-            // 
-            colDueDate.Text = "Due Date";
-            colDueDate.Width = 150;
-            // 
-            // colStatus
-            // 
-            colStatus.Text = "Status";
-            colStatus.Width = 100;
-            // 
-            // btnAddTask
-            // 
-            btnAddTask.Cursor = Cursors.Hand;
-            btnAddTask.Location = new Point(17, 691);
-            btnAddTask.Name = "btnAddTask";
-            btnAddTask.Size = new Size(140, 42);
-            btnAddTask.TabIndex = 2;
-            btnAddTask.Text = "Add Task";
-            btnAddTask.UseVisualStyleBackColor = true;
-            btnAddTask.Click += btnAddTask_Click;
-            // 
-            // btnDeleteTask
-            // 
-            btnDeleteTask.Cursor = Cursors.Hand;
-            btnDeleteTask.Location = new Point(172, 691);
-            btnDeleteTask.Name = "btnDeleteTask";
-            btnDeleteTask.Size = new Size(140, 42);
-            btnDeleteTask.TabIndex = 3;
-            btnDeleteTask.Text = "Delete Task";
-            btnDeleteTask.UseVisualStyleBackColor = true;
-            btnDeleteTask.Click += btnDeleteTask_Click;
+            lblTasksTitle.TextAlign = ContentAlignment.BottomLeft;
             // 
             // lblTasksDescription
             // 
-            lblTasksDescription.AutoSize = true;
+            lblTasksDescription.AutoSize = false;
+            lblTasksDescription.Dock = DockStyle.Bottom;
             lblTasksDescription.ForeColor = Color.FromArgb(110, 120, 135);
-            lblTasksDescription.Location = new Point(44, 74);
             lblTasksDescription.Name = "lblTasksDescription";
-            lblTasksDescription.Size = new Size(281, 20);
-            lblTasksDescription.TabIndex = 4;
+            lblTasksDescription.Size = new Size(1100, 28);
+            lblTasksDescription.TabIndex = 1;
+            lblTasksDescription.Tag = "muted";
             lblTasksDescription.Text = "Manage assignments and track deadlines";
             lblTasksDescription.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // pnlToolbar
+            // 
+            pnlToolbar.Controls.Add(cmbCourseFilter);
+            pnlToolbar.Dock = DockStyle.Top;
+            pnlToolbar.Name = "pnlToolbar";
+            pnlToolbar.Size = new Size(1100, 56);
+            pnlToolbar.TabIndex = 1;
             // 
             // cmbCourseFilter
             // 
             cmbCourseFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCourseFilter.Font = new Font("Segoe UI", 10.5F);
             cmbCourseFilter.FormattingEnabled = true;
-            cmbCourseFilter.Location = new Point(419, 149);
+            cmbCourseFilter.Location = new Point(0, 4);
             cmbCourseFilter.Name = "cmbCourseFilter";
-            cmbCourseFilter.Size = new Size(351, 28);
-            cmbCourseFilter.TabIndex = 5;
+            cmbCourseFilter.Size = new Size(360, 31);
+            cmbCourseFilter.TabIndex = 0;
             cmbCourseFilter.SelectedIndexChanged += cmbCourseFilter_SelectedIndexChanged;
+            // 
+            // pnlListCard
+            // 
+            pnlListCard.BackColor = Color.White;
+            pnlListCard.Controls.Add(lvTasks);
+            pnlListCard.Controls.Add(pnlFooter);
+            pnlListCard.Dock = DockStyle.Fill;
+            pnlListCard.Name = "pnlListCard";
+            pnlListCard.Padding = new Padding(12);
+            pnlListCard.TabIndex = 2;
+            // 
+            // lvTasks
+            // 
+            lvTasks.BackColor = Color.White;
+            lvTasks.BorderStyle = BorderStyle.None;
+            lvTasks.Columns.AddRange(new ColumnHeader[] { colTask, colCourse, colDueDate, colStatus });
+            lvTasks.Dock = DockStyle.Fill;
+            lvTasks.Font = new Font("Segoe UI", 10.5F);
+            lvTasks.FullRowSelect = true;
+            lvTasks.GridLines = false;
+            lvTasks.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            lvTasks.MultiSelect = false;
+            lvTasks.Name = "lvTasks";
+            lvTasks.SmallImageList = imgRowHeight;
+            lvTasks.TabIndex = 0;
+            lvTasks.UseCompatibleStateImageBehavior = false;
+            lvTasks.View = View.Details;
+            lvTasks.DoubleClick += lvTasks_DoubleClick;
+            lvTasks.SizeChanged += lvTasks_SizeChanged;
+            // 
+            // colTask
+            // 
+            colTask.Text = "Task";
+            colTask.Width = 380;
+            // 
+            // colCourse
+            // 
+            colCourse.Text = "Course";
+            colCourse.Width = 280;
+            // 
+            // colDueDate
+            // 
+            colDueDate.Text = "Due Date";
+            colDueDate.Width = 160;
+            // 
+            // colStatus
+            // 
+            colStatus.Text = "Status";
+            colStatus.Width = 150;
+            // 
+            // imgRowHeight
+            // 
+            imgRowHeight.ImageSize = new Size(1, 36);
+            // 
+            // pnlFooter
+            // 
+            pnlFooter.Controls.Add(btnAddTask);
+            pnlFooter.Controls.Add(btnDeleteTask);
+            pnlFooter.Dock = DockStyle.Bottom;
+            pnlFooter.Name = "pnlFooter";
+            pnlFooter.Size = new Size(1000, 62);
+            pnlFooter.TabIndex = 1;
+            pnlFooter.Tag = "card";
+            // 
+            // btnAddTask
+            // 
+            btnAddTask.BackColor = Color.FromArgb(55, 110, 190);
+            btnAddTask.Cursor = Cursors.Hand;
+            btnAddTask.FlatAppearance.BorderSize = 0;
+            btnAddTask.FlatStyle = FlatStyle.Flat;
+            btnAddTask.Font = new Font("Segoe UI Semibold", 10.5F);
+            btnAddTask.ForeColor = Color.White;
+            btnAddTask.Location = new Point(0, 14);
+            btnAddTask.Name = "btnAddTask";
+            btnAddTask.Size = new Size(150, 44);
+            btnAddTask.TabIndex = 0;
+            btnAddTask.Tag = "primary";
+            btnAddTask.Text = "Add Task";
+            btnAddTask.UseVisualStyleBackColor = false;
+            btnAddTask.Click += btnAddTask_Click;
+            // 
+            // btnDeleteTask
+            // 
+            btnDeleteTask.BackColor = Color.FromArgb(220, 53, 69);
+            btnDeleteTask.Cursor = Cursors.Hand;
+            btnDeleteTask.FlatAppearance.BorderSize = 0;
+            btnDeleteTask.FlatStyle = FlatStyle.Flat;
+            btnDeleteTask.Font = new Font("Segoe UI Semibold", 10.5F);
+            btnDeleteTask.ForeColor = Color.White;
+            btnDeleteTask.Location = new Point(162, 14);
+            btnDeleteTask.Name = "btnDeleteTask";
+            btnDeleteTask.Size = new Size(150, 44);
+            btnDeleteTask.TabIndex = 1;
+            btnDeleteTask.Tag = "danger";
+            btnDeleteTask.Text = "Delete Task";
+            btnDeleteTask.UseVisualStyleBackColor = false;
+            btnDeleteTask.Click += btnDeleteTask_Click;
             // 
             // ucTasks
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 247, 250);
-            Controls.Add(cmbCourseFilter);
-            Controls.Add(lblTasksDescription);
-            Controls.Add(btnDeleteTask);
-            Controls.Add(btnAddTask);
-            Controls.Add(lvTasks);
-            Controls.Add(lblTasksTitle);
+            Controls.Add(pnlListCard);   
+            Controls.Add(pnlToolbar);
+            Controls.Add(pnlHeader);     
+            Font = new Font("Segoe UI", 10F);
             Name = "ucTasks";
             Size = new Size(1100, 750);
+            pnlHeader.ResumeLayout(false);
+            pnlToolbar.ResumeLayout(false);
+            pnlListCard.ResumeLayout(false);
+            pnlFooter.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
+        private Panel pnlHeader;
+        private Panel pnlToolbar;
+        private Panel pnlListCard;
+        private Panel pnlFooter;
+        private ImageList imgRowHeight;
         private Label lblTasksTitle;
         private ListView lvTasks;
         private ColumnHeader colTask;

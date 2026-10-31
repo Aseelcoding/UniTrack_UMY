@@ -372,5 +372,11 @@ namespace UniTrack_UMY.WinForms.UserControls
         {
             DisplayTasks(ApplyFilters());
         }
+
+        private void lvTasks_SizeChanged(object? sender, EventArgs e)
+        {
+            int fixedWidth = colCourse.Width + colDueDate.Width + colStatus.Width;
+            colTask.Width = Math.Max(250, lvTasks.ClientSize.Width - fixedWidth);
+        }
     }
 }
