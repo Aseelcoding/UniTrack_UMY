@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Runtime;
+using UniTrack_UMY.Core.AI;
 using UniTrack_UMY.Core.Interfaces;
 using UniTrack_UMY.Core.Models;
+using UniTrack_UMY.Infrastructure.AI;
 using UniTrack_UMY.Infrastructure.Services;
 using UniTrack_UMY.WinForms.Services;
 using UniTrack_UMY.WinForms.UserControls;
@@ -12,6 +11,8 @@ namespace UniTrack_UMY.WinForms.Forms
 {
     public partial class frmMain : Form
     {
+        private readonly IAIService _aiService;
+        private readonly AISettingsService _aiSettingsService;
         private readonly SettingsService _settingsService;
         private AppSettings _settings;
         private ThemeColors _themeColors;
@@ -32,6 +33,9 @@ namespace UniTrack_UMY.WinForms.Forms
         private ucSchedule? _schedulePage;
         private ucNotesPlanner? _notesPlannerPage;
         private ucSettings? _settingsPage;
+
+        private ucAIAssistant? _aiAssistantPage;
+
         public frmMain() : this(new List<Course>(), null)
         {
         }
@@ -46,8 +50,14 @@ namespace UniTrack_UMY.WinForms.Forms
             IHtmlFetcher? htmlFetcher)
         {
             InitializeComponent();
+            var ollamaOptions = new OllamaOptions();
+            var ollamaClient = new OllamaClient(ollamaOptions);
+            _aiService = new LocalAIService(ollamaClient);
+
+            _aiSettingsService = new AISettingsService();
 
             _settingsService = new SettingsService();
+
             _settings = _settingsService.Load();
 
             _courses = courses ?? new List<Course>();
@@ -194,6 +204,13 @@ namespace UniTrack_UMY.WinForms.Forms
             btnNotesPlanner.Text =
                 _localizationManager.GetText("NotesPlanner");
 
+            // تأكد من وجود هذا الزر في الـ Designer
+            if (btnAIAssistant != null)
+            {
+                btnAIAssistant.Text =
+                    _localizationManager.GetText("AI Assistant");
+            }
+
             btnSettings.Text =
                 _localizationManager.GetText("Settings");
         }
@@ -229,7 +246,12 @@ namespace UniTrack_UMY.WinForms.Forms
             else if (currentPage is ucNotesPlanner)
                 ShowPage(new ucNotesPlanner(_courses));
             else if (currentPage is ucSettings)
-                ShowPage(new ucSettings());
+            {
+                // تم إصلاح اسم المتغير هنا لتجنب التعارض مع حقل الفئة _settings
+                var settingsPage = new ucSettings();
+                settingsPage.AttachAI(_aiService, _aiSettingsService);
+                ShowPage(settingsPage);
+            }
         }
 
         private void ChangeTheme(AppTheme theme)
@@ -289,7 +311,27 @@ namespace UniTrack_UMY.WinForms.Forms
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            ShowPage(new ucSettings());
+            var settings = new ucSettings();
+            settings.AttachAI(_aiService, _aiSettingsService);
+            ShowPage(settings);
+        }
+
+        private void btnAIAssistant_Click(object sender, EventArgs e)
+        {
+            if (_aiAssistantPage == null || _aiAssistantPage.IsDisposed)
+            {
+                // تمرير قائمة فارغة للجدول مؤقتاً لتجنب خطأ الترجمة
+                var scheduleItems = new List<ScheduleItem>();
+
+                _aiAssistantPage = new ucAIAssistant(
+                    _aiService,
+                    _aiSettingsService,
+                    _tasks,
+                    _courses,
+                    scheduleItems);
+            }
+
+            ShowPage(_aiAssistantPage);
         }
     }
 }

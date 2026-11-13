@@ -10,10 +10,18 @@
 	  
   </ItemGroup>
 	<ItemGroup>
+		<None Update="AI\PromptTemplates\AcademicAssistantSystemPrompt.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
 		<InternalsVisibleTo Include="UniTrack_UMY.Tests" />
 	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UniTrack_UMY.Core\UniTrack_UMY.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AI\PromptTemplates\" />
   </ItemGroup>
 
 </Project>
