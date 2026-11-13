@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace UniTrack_UMY.Core.Interfaces
 {
     public interface IHtmlFetcher
     {
-        Task<string> GetHtmlAsync(string url);
+        Task<string> GetHtmlAsync(string url, CancellationToken cancellationToken = default);
     }
 }
