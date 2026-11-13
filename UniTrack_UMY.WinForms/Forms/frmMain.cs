@@ -1,4 +1,5 @@
 ﻿using System.Runtime;
+using System.Threading;
 using UniTrack_UMY.Core.AI;
 using UniTrack_UMY.Core.Interfaces;
 using UniTrack_UMY.Core.Models;
@@ -21,6 +22,8 @@ namespace UniTrack_UMY.WinForms.Forms
 
         private readonly List<Course> _courses;
         private readonly IHtmlFetcher? _htmlFetcher;
+        private readonly CancellationTokenSource _taskLoadingCts = new();
+        private bool _isClosing;
 
         private readonly List<TaskItem> _tasks = new();
         private readonly List<string> _taskLoadErrors = new();
@@ -50,6 +53,7 @@ namespace UniTrack_UMY.WinForms.Forms
             IHtmlFetcher? htmlFetcher)
         {
             InitializeComponent();
+            FormClosing += frmMain_FormClosing;
             var ollamaOptions = new OllamaOptions();
             var ollamaClient = new OllamaClient(ollamaOptions);
             _aiService = new LocalAIService(ollamaClient);
@@ -80,6 +84,14 @@ namespace UniTrack_UMY.WinForms.Forms
             Shown += frmMain_Shown;
         }
 
+        private void frmMain_FormClosing(
+            object? sender,
+            FormClosingEventArgs e)
+        {
+            _isClosing = true;
+            _taskLoadingCts.Cancel();
+        }
+
         private async void frmMain_Shown(
             object? sender,
             EventArgs e)
@@ -103,13 +115,17 @@ namespace UniTrack_UMY.WinForms.Forms
                     new TaskLoadingService(_htmlFetcher!);
 
                 var result = await taskLoadingService
-                    .LoadTasksAsync(_courses);
+                    .LoadTasksAsync(_courses, _taskLoadingCts.Token);
 
                 _tasks.Clear();
                 _tasks.AddRange(result.Tasks);
 
                 _taskLoadErrors.Clear();
                 _taskLoadErrors.AddRange(result.Errors);
+            }
+            catch (OperationCanceledException) when (_taskLoadingCts.IsCancellationRequested)
+            {
+                return;
             }
             catch (Exception ex)
             {
@@ -120,9 +136,10 @@ namespace UniTrack_UMY.WinForms.Forms
             finally
             {
                 _isLoadingTasks = false;
-                _hasLoadedTasks = true;
+                _hasLoadedTasks = !_isClosing;
 
-                RefreshCurrentDataPage();
+                if (!_isClosing && !IsDisposed && !Disposing)
+                    RefreshCurrentDataPage();
             }
         }
 
