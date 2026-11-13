@@ -14,6 +14,9 @@ namespace UniTrack_UMY.WinForms.Services
         private readonly WebView2 _webView;
         private readonly SemaphoreSlim _semaphore = new(1, 1);
 
+        private static readonly TimeSpan NavigationTimeout =
+            TimeSpan.FromSeconds(30);
+
         public WebViewHtmlFetcher(WebView2 webView)
         {
             _webView = webView ??
@@ -25,7 +28,10 @@ namespace UniTrack_UMY.WinForms.Services
             if (string.IsNullOrWhiteSpace(url))
                 return string.Empty;
 
-            if (!Uri.TryCreate(url, UriKind.Absolute, out Uri? uri) ||
+            if (!Uri.TryCreate(
+                    url,
+                    UriKind.Absolute,
+                    out Uri? uri) ||
                 (uri.Scheme != Uri.UriSchemeHttp &&
                  uri.Scheme != Uri.UriSchemeHttps))
             {
@@ -36,10 +42,18 @@ namespace UniTrack_UMY.WinForms.Services
 
             try
             {
+                if (_webView.IsDisposed ||
+                    !_webView.IsHandleCreated)
+                {
+                    throw new InvalidOperationException(
+                        "WebView2 control is not available.");
+                }
+
                 if (_webView.CoreWebView2 == null)
                 {
                     throw new InvalidOperationException(
-                        "WebView2 is not initialized.");
+                        "WebView2 is not initialized. " +
+                        "Call EnsureCoreWebView2Async first.");
                 }
 
                 var completion = new TaskCompletionSource<bool>(
@@ -54,55 +68,67 @@ namespace UniTrack_UMY.WinForms.Services
                     };
 
                 EventHandler<CoreWebView2NavigationCompletedEventArgs>
-     completedHandler = (sender, e) =>
-     {
-         if (expectedNavigationId != 0 &&
-             e.NavigationId == expectedNavigationId)
-         {
-             if (e.IsSuccess)
-             {
-                 
-                 completion.TrySetResult(true);
-             }
-             else
-             {
-                 completion.TrySetException(
-                     new InvalidOperationException(
-                         $"WebView2 navigation failed: {e.WebErrorStatus}"));
-             }
-         }
-     };
-                _webView.NavigationStarting += startingHandler;
-                _webView.NavigationCompleted += completedHandler;
+                    completedHandler = (sender, e) =>
+                    {
+                        if (expectedNavigationId == 0 ||
+                            e.NavigationId != expectedNavigationId)
+                        {
+                            return;
+                        }
+
+                        if (e.IsSuccess)
+                        {
+                            completion.TrySetResult(true);
+                        }
+                        else
+                        {
+                            completion.TrySetException(
+                                new InvalidOperationException(
+                                    "WebView2 navigation failed: " +
+                                    e.WebErrorStatus));
+                        }
+                    };
+
+                CoreWebView2 core = _webView.CoreWebView2;
+
+                core.NavigationStarting += startingHandler;
+                core.NavigationCompleted += completedHandler;
 
                 try
                 {
-                    _webView.Source = uri;
+                    core.Navigate(uri.AbsoluteUri);
+
+                    Task timeoutTask = Task.Delay(NavigationTimeout);
 
                     Task completedTask = await Task.WhenAny(
                         completion.Task,
-                        Task.Delay(TimeSpan.FromSeconds(15)));
+                        timeoutTask);
 
                     if (completedTask != completion.Task)
                     {
-                        _webView.CoreWebView2.Stop();
+                        core.Stop();
+
                         throw new TimeoutException(
-                            "WebView2 navigation timed out.");
+                            $"WebView2 navigation timed out after " +
+                            $"{NavigationTimeout.TotalSeconds} seconds. " +
+                            $"URL: {uri.AbsoluteUri}");
                     }
 
-                    await Task.Delay(500);
                     await completion.Task;
-                    string json =
-                        await _webView.CoreWebView2.ExecuteScriptAsync(
-                            "document.documentElement.outerHTML");
+
+                    // Allow dynamically rendered page content to settle.
+                    await Task.Delay(1000);
+
+                    string json = await core.ExecuteScriptAsync(
+                        "document.documentElement.outerHTML");
 
                     return JsonSerializer.Deserialize<string>(json)
                         ?? string.Empty;
                 }
                 finally
                 {
-                    _webView.NavigationStarting -= startingHandler;
-                    _webView.NavigationCompleted -= completedHandler;
+                    core.NavigationStarting -= startingHandler;
+                    core.NavigationCompleted -= completedHandler;
                 }
             }
             finally
