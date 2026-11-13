@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using UniTrack_UMY.Core.Interfaces;
@@ -52,10 +53,12 @@ namespace UniTrack_UMY.Infrastructure.Services
         /// (two attempts in total) as required by FR-17/FR-18.
         /// </summary>
         public async Task<(List<TaskItem> Tasks, List<string> Errors)>
-            LoadTasksAsync(IEnumerable<Course> courses)
+            LoadTasksAsync(IEnumerable<Course> courses, CancellationToken cancellationToken = default)
         {
             if (courses == null)
                 throw new ArgumentNullException(nameof(courses));
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             List<Course> courseList = courses
                 .Where(c => c != null)
@@ -74,7 +77,7 @@ namespace UniTrack_UMY.Infrastructure.Services
                 attempts++;
 
                 var attempt =
-                    await LoadCoursesOnceAsync(remaining);
+                    await LoadCoursesOnceAsync(remaining, cancellationToken);
 
                 tasks.AddRange(attempt.Tasks);
                 errors = attempt.Errors;
@@ -98,12 +101,15 @@ namespace UniTrack_UMY.Infrastructure.Services
         /// (FR-22..FR-24).
         /// </summary>
         public async Task<(List<TaskItem> Tasks, List<string> Errors)>
-            LoadCourseTasksAsync(Course course)
+            LoadCourseTasksAsync(Course course, CancellationToken cancellationToken = default)
         {
             if (course == null)
                 throw new ArgumentNullException(nameof(course));
 
-            var attempt = await LoadCoursesOnceAsync(new[] { course });
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var attempt = await LoadCoursesOnceAsync(
+                new[] { course }, cancellationToken);
 
             RecordSyncHistory(
                 1,
@@ -119,7 +125,7 @@ namespace UniTrack_UMY.Infrastructure.Services
             List<string> Errors,
             List<Course> FailedCourses,
             List<string> FailureReasons)>
-            LoadCoursesOnceAsync(IEnumerable<Course> courses)
+            LoadCoursesOnceAsync(IEnumerable<Course> courses, CancellationToken cancellationToken)
         {
             var tasks = new List<TaskItem>();
             var errors = new List<string>();
@@ -128,12 +134,15 @@ namespace UniTrack_UMY.Infrastructure.Services
 
             foreach (Course course in courses)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 try
                 {
                     Uri courseUri = ResolveMyKlassUrl(course.Url);
 
                     string html = await _htmlFetcher.GetHtmlAsync(
-                        courseUri.AbsoluteUri);
+                        courseUri.AbsoluteUri,
+                        cancellationToken);
 
                     if (string.IsNullOrWhiteSpace(html))
                     {
@@ -191,6 +200,10 @@ namespace UniTrack_UMY.Infrastructure.Services
                     }
 
                     tasks.AddRange(courseTasks);
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
