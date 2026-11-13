@@ -23,7 +23,7 @@ namespace UniTrack_UMY.WinForms.Services
                 throw new ArgumentNullException(nameof(webView));
         }
 
-        public async Task<string> GetHtmlAsync(string url)
+        public async Task<string> GetHtmlAsync(string url, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(url))
                 return string.Empty;
@@ -38,7 +38,8 @@ namespace UniTrack_UMY.WinForms.Services
                 return string.Empty;
             }
 
-            await _semaphore.WaitAsync();
+            cancellationToken.ThrowIfCancellationRequested();
+            await _semaphore.WaitAsync(cancellationToken);
 
             try
             {
@@ -98,13 +99,13 @@ namespace UniTrack_UMY.WinForms.Services
                 {
                     core.Navigate(uri.AbsoluteUri);
 
-                    Task timeoutTask = Task.Delay(NavigationTimeout);
-
-                    Task completedTask = await Task.WhenAny(
-                        completion.Task,
-                        timeoutTask);
-
-                    if (completedTask != completion.Task)
+                    try
+                    {
+                        await completion.Task.WaitAsync(
+                            NavigationTimeout,
+                            cancellationToken);
+                    }
+                    catch (TimeoutException)
                     {
                         core.Stop();
 
@@ -113,14 +114,21 @@ namespace UniTrack_UMY.WinForms.Services
                             $"{NavigationTimeout.TotalSeconds} seconds. " +
                             $"URL: {uri.AbsoluteUri}");
                     }
-
-                    await completion.Task;
+                    catch (OperationCanceledException)
+                    {
+                        core.Stop();
+                        throw;
+                    }
 
                     // Allow dynamically rendered page content to settle.
-                    await Task.Delay(1000);
+                    await Task.Delay(1000, cancellationToken);
+
+                    cancellationToken.ThrowIfCancellationRequested();
 
                     string json = await core.ExecuteScriptAsync(
                         "document.documentElement.outerHTML");
+
+                    cancellationToken.ThrowIfCancellationRequested();
 
                     return JsonSerializer.Deserialize<string>(json)
                         ?? string.Empty;
